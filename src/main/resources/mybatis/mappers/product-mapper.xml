@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.situ.reiz.product.dao.ProductDao">
+	<sql id="product_base_column">
+		MENU_ID,PRO_CODE,PRO_NAME,PRO_PATH,OLD_PRICE,NEW_PRICE,PRO_COUNT,IS_NEW,IS_LINE,PRO_INFO,ACTIVE_FLAG,CREATE_BY, CREATE_DATE
+	</sql>
+	<sql id="product_base_select">
+		SELECT ROW_ID,
+		<include refid="product_base_column" />
+		, UPDATE_BY,UPDATE_DATE FROM TB_PRODUCT WHERE ACTIVE_FLAG = 1
+	</sql>
+	<sql id="product_view_select">
+		SELECT ROW_ID,MENU_NAME,
+		<include refid="product_base_column" />
+		, UPDATE_BY,UPDATE_DATE FROM V_PRODUCT WHERE ACTIVE_FLAG = 1
+	</sql>
+	<insert id="save" parameterType="Product" useGeneratedKeys="true" keyProperty="rowId" keyColumn="ROW_ID">
+		INSERT INTO TB_PRODUCT (
+		<include refid="product_base_column" />
+		)
+		VALUES(#{menuId},#{proCode},#{proName},#{proPath},#{oldPrice},#{newPrice},#{proCount},#{isNew},#{isLine},#{proInfo},#{activeFlag},#{createBy},#{createDate})
+	</insert>
+	<insert id="update" parameterType="Product">
+		UPDATE TB_PRODUCT
+		<set>
+			<if test="menuId!=null">
+				MENU_ID = #{menuId},
+			</if>
+			<if test="proCode!=null">
+				PRO_CODE = #{proCode},
+			</if>
+			<if test="proName!=null">
+				PRO_NAME = #{proName},
+			</if>
+			<if test="proPath!=null">
+				PRO_PATH = #{proPath},
+			</if>
+			<if test="oldPrice!=null">
+				OLD_PRICE = #{oldPrice},
+			</if>
+			<if test="newPrice!=null">
+				NEW_PRICE = #{newPrice},
+			</if>
+			<if test="proCount!=null">
+				PRO_COUNT = #{proCount},
+			</if>
+			<if test="isNew!=null">
+				IS_NEW = #{isNew},
+			</if>
+			<if test="isLine!=null">
+				IS_LINE = #{isLine},
+			</if>
+			<if test="proInfo!=null">
+				PRO_INFO = #{proInfo},
+			</if>
+			<if test="activeFlag!=null">
+				ACTIVE_FLAG = #{activeFlag},
+			</if>
+			<if test="updateBy!=null">
+				UPADTE_BY = #{updateBy},
+			</if>
+			<if test="updateDate!=null">
+				UPDATE_DATE = #{updateDate},
+			</if>
+		</set>
+		WHERE ROW_ID = #{rowId}
+	</insert>
+	<delete id="delete">
+		DELETE FROM TB_PRODUCT WHERE ROW_ID = #{rowId}
+	</delete>
+	<update id="updateLine">
+		UPDATE TB_PRODUCT SET IS_LINE =#{isLine} WHERE ROW_ID = #{rowId}
+	</update>
+	<select id="find" resultType="Product">
+		<include refid="product_view_select" />
+	</select>
+	<select id="get" resultType="Product">
+		<include refid="product_base_select" />
+		AND ROW_ID = #{rowId}
+	</select>
+</mapper>

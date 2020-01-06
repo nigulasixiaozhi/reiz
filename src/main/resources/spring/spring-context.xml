@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd ">
+	<!-- 启动自动扫描机制 -->
+	<context:component-scan base-package="com.situ.reiz">
+		<!-- Controller层实例的生成 交给SpringMVC去处理 -->
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	<!-- 配置数据源 -->
+	<context:property-placeholder location="classpath:jdbc.properties" />
+	<!-- 定义数据源Bean,使用druid数据源实现 -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+		<property name="driverClassName" value="${db.driverClass}" />
+		<property name="url" value="${db.jdbcUrl}" />
+		<property name="username" value="${db.username}" />
+		<property name="password" value="${db.password}" />
+		<!-- 配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="${pool.initialSize}" />
+		<property name="minIdle" value="${pool.minIdle}" />
+		<property name="maxActive" value="${pool.maxActive}" />
+		<!-- 配置获取连接等待超时的时间 -->
+		<property name="maxWait" value="10000" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<property name="testWhileIdle" value="true" />
+		<!-- 这里建议配置为TRUE，防止取到的连接不可用 -->
+		<property name="testOnBorrow" value="true" />
+		<property name="testOnReturn" value="false" />
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+		<property name="poolPreparedStatements" value="true" />
+		<property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
+		<!-- 这里配置提交方式，默认就是TRUE，可以不用配置 -->
+		<property name="defaultAutoCommit" value="true" />
+		<!-- 验证连接有效与否的SQL，不同的数据配置不同 -->
+		<property name="validationQuery" value="select 1 " />
+		<!-- 配置监控统计拦截的filters -->
+		<!-- <property name="filters" value="stat" />
+		<property name="proxyFilters">
+			<list>
+				<ref bean="logFilter" />
+			</list>
+		</property> -->
+	</bean>
+	<!-- 让Spring容器 生成 sqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 将数据源 注入进来 -->
+		<property name="dataSource" ref="dataSource" />
+		<!-- 配置需要生成别名的类的包名，会去进行扫描，并生成别名。 -->
+		<property name="typeAliasesPackage" value="com.situ.reiz" />
+		<!-- 配置Mybatis的配置文件 -->
+		<property name="configLocation" value="classpath:mybatis/mybaits-config.xml" />
+		<!-- 配置Mybatis的映射文件 -->
+		<property name="mapperLocations" value="classpath:mybatis/mappers/*-mapper.xml" />
+	</bean>
+
+	<!-- 使用 MapperScannerConfigurer,将 会 查 找 类 路 径 下 的 映 射 器 并 自 动 将 它 们 创 建 成 MapperFactoryBean -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 配置要Scanner的基本包名 -->
+		<property name="basePackage" value="com.situ.reiz" />
+		<!-- 配置要处理的annotation -->
+		<property name="annotationClass" value="org.springframework.stereotype.Repository" />
+	</bean>
+</beans>

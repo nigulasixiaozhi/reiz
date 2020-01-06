@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.situ.reiz.address.dao.AddressDao">
+	<sql id="address_base_column">
+		USER_CODE,AREA1,AREA2,AREA3,LINK_NAME,LINK_PHONE,LINK_AREA,LINK_ADDR,POST_CODE,IS_DEFAULT,ACTIVE_FLAG,CREATE_BY, CREATE_DATE
+	</sql>
+	<sql id="address_base_select">
+		SELECT ROW_ID,
+		<include refid="address_base_column" />
+		, UPDATE_BY,UPDATE_DATE FROM TB_ADDRESS WHERE ACTIVE_FLAG = 1
+	</sql>
+	<insert id="save" parameterType="Address" useGeneratedKeys="true" keyProperty="rowId" keyColumn="ROW_ID">
+		INSERT INTO TB_ADDRESS (<include refid="address_base_column" />)
+		VALUES(#{userCode},#{area1},#{area2},#{area3},#{linkName},#{linkPhone},#{linkArea},#{linkAddr},#{postCode},#{isDefault},#{activeFlag},#{createBy},#{createDate})
+	</insert>
+	<insert id="update" parameterType="Address">
+		UPDATE TB_ADDRESS
+		<set>
+			<if test="userCode!=null">
+				USER_CODE = #{userCode},
+			</if>
+			<if test="area1!=null">
+				AREA1 = #{area1},
+			</if>
+			<if test="area2!=null">
+				AREA2 = #{area2},
+			</if>
+			<if test="area3!=null">
+				AREA3 = #{area3},
+			</if>
+			<if test="linkName!=null">
+				LINK_NAME = #{linkName},
+			</if>
+			<if test="linkPhone!=null">
+				LINK_PHONE = #{linkPhone},
+			</if>
+				<if test="linkArea!=null">
+				LINK_AREA = #{linkArea},
+			</if>
+			<if test="linkAddr!=null">
+				LINK_ADDR = #{linkAddr},
+			</if>
+			<if test="postCode!=null">
+				POST_CODE = #{postCode},
+			</if>
+			<if test="isDefault!=null">
+				IS_DEFAULT = #{isDefault},
+			</if>
+			<if test="activeFlag!=null">
+				ACTIVE_FLAG = #{activeFlag},
+			</if>
+			<if test="updateBy!=null">
+				UPADTE_BY = #{updateBy},
+			</if>
+			<if test="updateDate!=null">
+				UPDATE_DATE = #{updateDate},
+			</if>
+		</set>
+		WHERE ROW_ID = #{rowId}
+	</insert>
+	<delete id="delete">
+		DELETE FROM TB_ADDRESS WHERE ROW_ID = #{rowId}
+	</delete>
+	<update id="updateNoDefault">
+		UPDATE TB_ADDRESS SET IS_DEFAULT = 0 WHERE USER_CODE = #{userCode}
+	</update>
+	<update id="updateDefault">
+		UPDATE TB_ADDRESS SET IS_DEFAULT = 1 WHERE ROW_ID = #{rowId}
+	</update>
+	<select id="find" resultType="Address">
+		<include refid="address_base_select" />
+	</select>
+	<select id="get" resultType="Address">
+		<include refid="address_base_select" />
+		AND ROW_ID = #{rowId}
+	</select>
+	<select id="findByUser" resultType="Address">
+		<include refid="address_base_select" /> AND USER_CODE = #{userCode}
+	</select>
+</mapper>

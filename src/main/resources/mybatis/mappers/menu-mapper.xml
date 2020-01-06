@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.situ.reiz.menu.dao.MenuDao">
+	<sql id="menu_base_column">
+		PARENT_ID,MENU_KIND, MENU_NAME,MENU_INFO,ORDER_NUM,ACTIVE_FLAG,CREATE_BY, CREATE_DATE
+	</sql>
+	<sql id="menu_base_select">
+		SELECT ROW_ID,
+		<include refid="menu_base_column" />
+		, UPDATE_BY,UPDATE_DATE FROM TB_MENU WHERE ACTIVE_FLAG = 1
+	</sql>
+	<insert id="save" parameterType="Menu" useGeneratedKeys="true" keyProperty="rowId" keyColumn="ROW_ID">
+		INSERT INTO TB_MENU(
+		<include refid="menu_base_column" />
+		)
+		VALUES(#{parentId},#{menuKind},#{menuName},#{menuInfo},#{orderNum},#{activeFlag},#{createBy},#{createDate})
+	</insert>
+	<insert id="update" parameterType="Menu">
+		UPDATE TB_MENU
+		<set>
+			<if test="parentId!=null">
+				PARENT_ID = #{parentId},
+			</if>
+			<if test="menuKind!=null">
+				MENU_KIND = #{menuKind},
+			</if>
+			<if test="menuName!=null">
+				MENU_NAME = #{menuName},
+			</if>
+			<if test="menuInfo!=null">
+				MENU_INFO = #{menuInfo},
+			</if>
+			<if test="orderNum!=null">
+				ORDER_NUM = #{orderNum},
+			</if>
+			<if test="activeFlag!=null">
+				ACTIVE_FLAG = #{activeFlag},
+			</if>
+			<if test="updateBy!=null">
+				UPADTE_BY = #{updateBy},
+			</if>
+			<if test="updateDate!=null">
+				UPDATE_DATE = #{updateDate},
+			</if>
+		</set>
+		WHERE ROW_ID = #{rowId}
+	</insert>
+	<delete id="delete">
+		DELETE FROM TB_MENU WHERE ROW_ID = #{rowId}
+	</delete>
+	<update id="updateOrderNum">
+		UPDATE TB_MENU SET ORDER_NUM = ORDER_NUM +1 WHERE ORDER_NUM >= #{orderNum}
+	</update>
+	<select id="find" resultType="Menu">
+		<include refid="menu_base_select" /> ORDER BY ORDER_NUM
+	</select>
+	<select id="get" resultType="Menu">
+		<include refid="menu_base_select" />
+		AND ROW_ID = #{rowId}
+	</select>
+	<select id="getByNameAndParent" resultType="Menu">
+		<include refid="menu_base_select" />
+		AND PARENT_ID = #{parentId} AND MENU_NAME = #{menuName}
+	</select>
+	<select id="getMaxOrder" resultType="java.lang.Integer">
+		SELECT MAX(ORDER_NUM)FROM TB_MENU WHERE ACTIVE_FLAG =1
+	</select>
+	<select id="getMaxOrderByParent" resultType="java.lang.Integer">
+		SELECT MAX(ORDER_NUM)FROM TB_MENU WHERE ACTIVE_FLAG =1 AND PARENT_ID = #{parentId}
+	</select>
+	
+	<select id="findByParent" resultType="Menu">
+		<include refid="menu_base_select" />
+		AND PARENT_ID = #{parentId} ORDER BY ORDER_NUM
+	</select>
+</mapper>
