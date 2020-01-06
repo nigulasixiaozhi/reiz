@@ -156,8 +156,7 @@ public class ShopController implements Serializable {
 	}
 
 	/**
-	 * 执行用户登录
-	 * 
+	 * 执行用户登录 测试代码修改
 	 * @return 1:成功;2:用户密码或密码错误;3:用户被锁定;
 	 */
 	@ResponseBody
