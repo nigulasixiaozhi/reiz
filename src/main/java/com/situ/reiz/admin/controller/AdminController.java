@@ -14,7 +14,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.situ.reiz.admin.service.AdminService;
 import com.situ.reiz.util.ConfigUtils;
-
+/**
+ * 
+ * @ClassName:AdminController 
+ * @Description:(这是准备修改的代码)
+ */
 @Controller
 public class AdminController implements Serializable {
 	private static final long serialVersionUID = 1L;
