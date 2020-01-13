@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<%@include file="/check_user_login.jsp" %>
+<%@include file="/check_user_login.jsp"%>
 <html class="no-js" lang="en">
 <head>
 <meta charset="utf-8">
@@ -9,6 +9,7 @@
 <meta name="robots" content="noindex, follow" />
 <meta name="description" content="">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<jsp:include page="/base.jsp" />
 <!-- Favicon -->
 <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.ico">
 <!-- CSS	============================================ -->
@@ -27,6 +28,9 @@
 <!-- Vendor & Plugins CSS (Please remove the comment from below vendor.min.css & plugins.min.css for better website load performance and remove css files from avobe) -->
 <!--    <script src="assets/js/vendor/vendor.min.js"></script><script src="assets/js/plugins/plugins.min.js"></script>    -->
 <!-- Main Style CSS (Please use minify version for better website load performance) -->
+<!-- jquery.validationEngine CSS Begin -->
+<link href="assets/vendor/jquery-validation/validationEngine.jquery.css" rel="stylesheet">
+<!-- jquery.validationEngine CSS End -->
 <link rel="stylesheet" href="assets/css/style.css">
 <!--<link rel="stylesheet" href="assets/css/style.min.css">-->
 </head>
@@ -41,8 +45,8 @@
 					<div class="col-12">
 						<!-- breadcrumb-list start -->
 						<ul class="breadcrumb-list">
-							<li class="breadcrumb-item"><a href="index.html">Home</a></li>
-							<li class="breadcrumb-item active">My Account Page</li>
+							<li class="breadcrumb-item"><a href="index">首页</a></li>
+							<li class="breadcrumb-item active">我的商城</li>
 						</ul>
 						<!-- breadcrumb-list end -->
 					</div>
@@ -56,46 +60,15 @@
 				<div class="row">
 					<div class="col-12">
 						<div class="account-dashboard">
-							<div class="dashboard-upper-info">
-								<div class="row align-items-center no-gutters">
-									<div class="col-lg-3 col-md-12">
-										<div class="d-single-info">
-											<p class="user-name">
-												Hello <span>Yourmail@info</span>
-											</p>
-											<p>
-												(not yourmail@info? <a href="#">Log Out</a>)
-											</p>
-										</div>
-									</div>
-									<div class="col-lg-4 col-md-12">
-										<div class="d-single-info">
-											<p>Need Assistance? Customer service at.</p>
-											<p>admin@devitems.com.</p>
-										</div>
-									</div>
-									<div class="col-lg-3 col-md-12">
-										<div class="d-single-info">
-											<p>E-mail them at</p>
-											<p>support@yoursite.com</p>
-										</div>
-									</div>
-									<div class="col-lg-2 col-md-12">
-										<div class="d-single-info text-lg-center">
-											<a href="cart.html" class="view-cart"><i class="fa fa-cart-plus"></i>view cart</a>
-										</div>
-									</div>
-								</div>
-							</div>
 							<div class="row">
 								<div class="col-md-12 col-lg-2">
 									<!-- Nav tabs -->
 									<ul role="tablist" id="account_list" class="nav flex-column dashboard-list">
 										<li><a href="#dashboard" data-toggle="tab" class="nav-link active">Dashboard</a></li>
-										<li><a href="#orders" data-toggle="tab" class="nav-link">Orders</a></li>
+										<li><a href="orders" data-toggle="tab" class="nav-link">订单信息</a></li>
 										<li><a href="address" data-toggle="tab" class="nav-link">收货地址</a></li>
-										<li><a href="#account-details" data-toggle="tab" class="nav-link">Account details</a></li>
-										<li><a href="login-register.html" class="nav-link">logout</a></li>
+										<li><a href="account-details" data-toggle="tab" class="nav-link">密码修改</a></li>
+										<li><a href="loginout" class="nav-link">登出</a></li>
 									</ul>
 								</div>
 								<div class="col-md-12 col-lg-10">
@@ -108,33 +81,20 @@
 											</p>
 										</div>
 										<div class="tab-pane fade" id="orders">
-											<h3>Orders</h3>
+											<h3>订单信息</h3>
 											<div class="table-responsive">
 												<table class="table">
 													<thead>
 														<tr>
-															<th>Order</th>
-															<th>Date</th>
-															<th>Status</th>
-															<th>Total</th>
-															<th>Actions</th>
+															<th>订单编号</th>
+															<th>订单日期</th>
+															<th>订单状态</th>
+															<th>订单总价</th>
+															<th>操作</th>
 														</tr>
 													</thead>
 													<tbody>
-														<tr>
-															<td>1</td>
-															<td>May 10, 2018</td>
-															<td>Processing</td>
-															<td>$25.00 for 1 item</td>
-															<td><a href="cart.html" class="view">view</a></td>
-														</tr>
-														<tr>
-															<td>2</td>
-															<td>May 10, 2018</td>
-															<td>Processing</td>
-															<td>$17.00 for 1 item</td>
-															<td><a href="cart.html" class="view">view</a></td>
-														</tr>
+
 													</tbody>
 												</table>
 											</div>
@@ -154,47 +114,24 @@
 														</tr>
 													</thead>
 													<tbody>
-														<tr>
-															<td>Haven - Free Real Estate PSD Template</td>
-															<td>May 10, 2018</td>
-															<td>never</td>
-															<td><a href="#" class="view">Click Here To Download Your File</a></td>
-														</tr>
-														<tr>
-															<td>Nevara - ecommerce html template</td>
-															<td>Sep 11, 2018</td>
-															<td>never</td>
-															<td><a href="#" class="view">Click Here To Download Your File</a></td>
-														</tr>
+
 													</tbody>
 												</table>
 											</div>
 										</div>
 										<div class="tab-pane fade" id="account-details">
-											<h3>Account details</h3>
+											<h3>密码修改</h3>
 											<div class="login">
 												<div class="login-form-container">
 													<div class="account-login-form">
-														<form action="#">
-															<p>
-																Already have an account? <a href="#">Log in instead!</a>
-															</p>
-															<label>Social title</label>
-															<div class="input-radio">
-																<span class="custom-radio"><input type="radio" value="1" name="id_gender">Mr.</span><span class="custom-radio"><input type="radio" value="1" name="id_gender">Mrs.</span>
-															</div>
+														<form id="form_pass_update">
 															<div class="account-input-box">
-																<label>First Name</label><input type="text" name="first-name"><label>Last Name</label><input type="text" name="last-name"><label>Email</label><input type="text" name="email-name"><label>Password</label><input type="password" name="user-password"><label>Birthdate</label><input type="text" placeholder="MM/DD/YYYY" value="" name="birthday">
-															</div>
-															<div class="example">(E.g.: 05/31/1970)</div>
-															<div class="custom-checkbox">
-																<input type="checkbox" value="1" name="optin"><label>Receive offers from our partners</label>
-															</div>
-															<div class="custom-checkbox">
-																<input type="checkbox" value="1" name="newsletter"><label>Sign up for our newsletter<br> <em>You may unsubscribe at any moment. For that purpose, please find our contact info in the legal notice.</em></label>
+																<label>原&nbsp;密&nbsp;码</label><input type="password" id="oldPass" class="validate[required,ajax[ajaxUserPass]]">
+																<label>新&nbsp;密&nbsp;码</label><input type="password" name="newPass" id="newPass" class="validate[required]">
+																<label>密码确认</label><input type="password" id="confPass" class="validate[required,equals[newPass]]">
 															</div>
 															<div class="button-box">
-																<button class="btn default-btn" type="submit">Save</button>
+																<button class="btn default-btn" type="submit">提交</button>
 															</div>
 														</form>
 													</div>
@@ -228,7 +165,7 @@
 						<div class="form-group row">
 							<label class="col-sm-2 col-form-label">收货人姓名</label>
 							<div class="col-sm-7">
-								<input class="form-control" name="linkName" id="linkName" value="${sessionScope.userLogin.userName}">
+								<input class="form-control" name="linkName" id="linkName" value="${sessionScope.userLogin.userName}"> <input type="hidden" id="rowId" name="rowId" />
 							</div>
 						</div>
 						<div class="form-group row">
@@ -262,7 +199,7 @@
 						</div>
 						<div class="form-group row">
 							<label class="col-sm-2 col-form-label">收货人详细地址</label>
-							<div class="col-sm-4" >
+							<div class="col-sm-4">
 								<input class="form-control" name="linkArea" id="linkArea" readonly="readonly">
 							</div>
 							<div class="col-sm-6">
@@ -274,6 +211,36 @@
 				<div class="modal-footer">
 					<button type="button" class="btn default-btn" data-dismiss="modal">关闭</button>
 					<button type="button" class="btn default-btn" id="btn_address_submit">提交</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="modal_order_detail" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">订单详情</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="table-content table-responsive">
+						<table class="table">
+							<thead>
+								<tr>
+									<th class="plantmore-product-thumbnail">商品图片</th>
+									<th class="cart-product-name">商品名称</th>
+									<th class="plantmore-product-price">商品售价</th>
+									<th class="plantmore-product-quantity">购买数量</th>
+									<th class="plantmore-product-subtotal">总价</th>
+								</tr>
+							</thead>
+							<tbody id="tbody_order_detail_table">
+								
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -295,10 +262,16 @@
 	<script src="assets/js/plugins/scrollup.min.js"></script>
 	<script src="assets/js/plugins/jqueryui.min.js"></script>
 	<script src="assets/js/plugins/ajax-contact.js"></script>
+	<!-- jquery.validationEngine JS Begin -->
+	<script src="assets/vendor/jquery-validation/jquery.validationEngine-zh_CN.js"></script>
+	<script src="assets/vendor/jquery-validation/jquery.validationEngine.js"></script>
+	<!-- jquery.validationEngine JS End -->
 	<!-- Vendor & Plugins JS (Please remove the comment from below vendor.min.js & plugins.min.js for better website load performance and remove js files from avobe) -->
 	<!--<script src="assets/js/vendor/vendor.min.js"></script><script src="assets/js/plugins/plugins.min.js"></script>-->
 	<!-- Main JS -->
 	<script src="assets/js/main.js"></script>
+	<!-- 引入自书写的全局使用的头部脚本 -->
+	<script src="assets/js/shop/head.js"></script>
 	<script type="text/javascript" src="assets/js/shop/my_account.js"></script>
 </body>
 </html>

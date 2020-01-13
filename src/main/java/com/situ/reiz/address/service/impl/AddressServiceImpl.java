@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.situ.reiz.address.dao.AddressDao;
 import com.situ.reiz.address.domain.Address;
 import com.situ.reiz.address.service.AddressService;
+import com.situ.reiz.util.MyBatisUtils;
 
 /** 
  * @ClassName:AddressServiceImpl 
@@ -27,7 +28,7 @@ public class AddressServiceImpl implements AddressService {
 
 	/** 
 	 * @Title: saveAddress 
-	 * @Description:(这里用一句话描述这个方法的作用)
+	 * @Description:(新增数据)
 	 * @param address
 	 * @return  
 	 */
@@ -37,7 +38,23 @@ public class AddressServiceImpl implements AddressService {
 		address.setActiveFlag(1);
 		address.setCreateBy(createBy);
 		address.setCreateDate(new Date());
-		return this.addressDao.save(address);
+		this.addressDao.save(address);
+		return address.getRowId();
+	}
+
+	/**
+	 * @Title: doPutAddress 
+	 * @Description:(修改数据)
+	 * @param address
+	 * @param createBy
+	 * @return
+	 */
+	@Override
+	public Integer doPutAddress(Address address, String createBy) {
+		Address editAddress = this.addressDao.get(address.getRowId());
+		editAddress = MyBatisUtils.buildEditData(editAddress, address);
+		this.addressDao.update(editAddress);
+		return 1;
 	}
 
 	/** 

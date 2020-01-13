@@ -40,7 +40,7 @@
 					<div class="col-12">
 						<!-- breadcrumb-list start -->
 						<ul class="breadcrumb-list">
-							<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+							<li class="breadcrumb-item"><a href="index">首页</a></li>
 							<li class="breadcrumb-item active">Shop Right sidebar</li>
 						</ul>
 						<!-- breadcrumb-list end -->

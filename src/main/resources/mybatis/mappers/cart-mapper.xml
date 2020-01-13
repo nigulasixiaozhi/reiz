@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.situ.reiz.cart.dao.CartDao">
+	<sql id="cart_base_column">
+		USER_CODE,PRODUCT_ID,ORDER_COUNT,SUM_PRICE,ACTIVE_FLAG,CREATE_BY, CREATE_DATE
+	</sql>
+	<sql id="cart_base_select">
+		SELECT ROW_ID,
+		<include refid="cart_base_column" />
+		, UPDATE_BY,UPDATE_DATE FROM TB_CART WHERE ACTIVE_FLAG = 1
+	</sql>
+	<sql id="cart_view_select">
+		SELECT ROW_ID,
+		<include refid="cart_base_column" />,PRO_CODE,PRO_NAME,PRO_PATH,OLD_PRICE,NEW_PRICE,
+		 UPDATE_BY,UPDATE_DATE FROM V_CART WHERE ACTIVE_FLAG = 1
+	</sql>
+	<insert id="save" parameterType="Cart" useGeneratedKeys="true" keyProperty="rowId" keyColumn="ROW_ID">
+		INSERT INTO TB_CART(
+		<include refid="cart_base_column" />
+		)
+		VALUES(#{userCode},#{productId},#{orderCount},#{sumPrice},#{activeFlag},#{createBy},#{createDate})
+	</insert>
+	<insert id="update" parameterType="Cart">
+		UPDATE TB_CART
+		<set>
+			<if test="userCode!=null">
+				USER_CODE = #{userCode},
+			</if>
+			<if test="productId!=null">
+				PRODUCT_ID = #{productId},
+			</if>
+			<if test="orderCount!=null">
+				ORDER_COUNT = #{orderCount},
+			</if>
+			<if test="sumPrice!=null">
+				SUM_PRICE = #{sumPrice},
+			</if>
+			<if test="activeFlag!=null">
+				ACTIVE_FLAG = #{activeFlag},
+			</if>
+			<if test="updateBy!=null">
+				UPADTE_BY = #{updateBy},
+			</if>
+			<if test="updateDate!=null">
+				UPDATE_DATE = #{updateDate},
+			</if>
+		</set>
+		WHERE ROW_ID = #{rowId}
+	</insert>
+	<delete id="delete">
+		DELETE FROM TB_CART WHERE ROW_ID = #{rowId}
+	</delete>
+	<select id="find" resultType="Cart">
+		<include refid="cart_base_select" />
+		ORDER BY ORDER_NUM
+	</select>
+	<select id="get" resultType="Cart">
+		<include refid="cart_base_select" />
+		AND ROW_ID = #{rowId}
+	</select>
+	<select id="findByUser" resultType="Cart">
+		<include refid="cart_base_select" />
+		AND USER_CODE = #{userCode}
+	</select>
+	<select id="getByCodeAndPro" resultType="Cart">
+		<include refid="cart_base_select" />
+		AND USER_CODE = #{userCode}
+		AND PRODUCT_ID = #{proId}
+	</select>
+	<update id="updateOrderCount">
+		UPDATE TB_CART SET ORDER_COUNT = ORDER_COUNT+1 WHERE ROW_ID = #{rowId}
+	</update>
+	<select id="findAllData" resultType="Cart">
+		<include refid="cart_view_select"/>
+		AND USER_CODE = #{userCode}
+	</select>
+	<delete id="deleteByUser">
+		DELETE FROM TB_CART WHERE USER_CODE = #{userCode}
+	</delete>
+</mapper>

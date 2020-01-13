@@ -173,15 +173,15 @@
                     "alertText3": "mm/dd/yyyy hh:mm:ss AM|PM 或 ", 
                     "alertText4": "yyyy-mm-dd hh:mm:ss AM|PM"
 	            },
-	            "ajaxRoleName":{
+	            "ajaxUserCode":{
 	            	// remote json service location
-                    "url": "role/checkRoleName",
+                    "url": "user/checkUserCode",
                     // error
-                    "alertText": "* 此角色名称已被使用",
+                    "alertText": "* 此登录账号已被使用",
                     // if you provide an "alertTextOk", it will show as a green prompt when the field validates
-                    "alertTextOk": "* 此角色名称可以使用",
+                    "alertTextOk": "* 此登录账号可以使用",
                     // speaks by itself
-                    "alertTextLoad": "* 正在确认角色名称是否可以使用，请稍等。"
+                    "alertTextLoad": "* 正在确认登录账号是否可以使用，请稍等。"
 	            },
 	            "ajaxStuCode":{
 	            	// remote json service location
@@ -206,6 +206,12 @@
                     "alertText": "* 此目录名称已被使用",
                     "alertTextOk": "* 此目录名称可以使用",
                     "alertTextLoad": "* 正在确认目录名称是否可以使用,请稍等。"
+	            },
+	            "ajaxUserPass":{
+	            	"url":'checkUserPass',
+                    "alertText": "* 原密码输入错误",
+                    "alertTextOk": "* 原密码输入正确",
+                    "alertTextLoad": "* 正在确认原密码是否可以正确,请稍等。"
 	            }
             };
             

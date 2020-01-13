@@ -64,7 +64,7 @@
 				<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
 					<a class="dropdown-item" href="#">Settings</a> <a class="dropdown-item" href="#">Activity Log</a>
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
+					<a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">登出</a>
 				</div></li>
 		</ul>
 
@@ -87,6 +87,7 @@
 				</div></li>
 			<li class="nav-item"><a class="nav-link" href="menu/index"> <i class="fas fa-fw fa-chart-area"></i> <span>目录管理</span></a></li>
 			<li class="nav-item"><a class="nav-link" href="product/index"> <i class="fas fa-fw fa-table"></i> <span>商品管理</span></a></li>
+			<li class="nav-item"><a class="nav-link" href="user/index"> <i class="fas fa-fw fa-table"></i> <span>用户管理</span></a></li>
 		</ul>
 
 		<div id="content-wrapper">
@@ -685,15 +686,15 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+					<h5 class="modal-title" id="exampleModalLabel">准备离开?</h5>
 					<button class="close" type="button" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">×</span>
 					</button>
 				</div>
-				<div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+				<div class="modal-body">如果想结束当前的会话，请点击 "登出" 按钮 </div>
 				<div class="modal-footer">
-					<button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-					<a class="btn btn-primary" href="login.html">Logout</a>
+					<button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
+					<a class="btn btn-primary" href="javascript:;" id="btn_loginout">登出</a>
 				</div>
 			</div>
 		</div>
@@ -744,6 +745,17 @@
 			});
 			
 			return false;
+		});
+		//绑定登出按钮
+		$('#btn_loginout').on('click',function(){
+			$.ajax({
+				url:'doAdminLoginOut',
+				success:function(result){
+					if(result){
+						window.location.href="admin";
+					}
+				}
+			});
 		});
 	});
 	</script>

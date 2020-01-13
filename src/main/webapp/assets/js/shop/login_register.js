@@ -32,4 +32,11 @@ $(document).ready(function() {
 			}
 		});
 	});
+	
+	$(document).off('keypress').on('keypress',function(event){
+		//如果是回车键
+		if(event.keyCode == 13){
+			$('#button_login').click();
+		}
+	});
 });

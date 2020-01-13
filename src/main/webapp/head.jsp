@@ -28,12 +28,13 @@
 					<div class="top-info-wrap text-right">
 						<ul class="my-account-container">
 							<c:if test="${sessionScope.userLogin!=null}">
-							<li><a href="account">我的商城</a></li>
-							<li><a href="wishlist">我的收藏</a></li>
-							<li><a href="cart">购物车</a></li>
+								<li><a href="account">我的商城</a></li>
+								<li><a href="wishlist">我的收藏</a></li>
+								<li><a href="cart">购物车</a></li>
+								<li><a href="loginout">登出</a></li>
 							</c:if>
 							<c:if test="${sessionScope.userLogin==null}">
-							<li><a href="login_register">注册/登录</a></li>
+								<li><a href="login_register">注册/登录</a></li>
 							</c:if>
 						</ul>
 					</div>
@@ -82,57 +83,17 @@
 				<div class="col-lg-3">
 					<div class="right-blok-box text-white d-flex">
 						<div class="user-wrap">
-							<a href="wishlist"><span class="cart-total">2</span><i class="icon-heart"></i></a>
+							<!-- 从session中取出用户的收藏个数 -->
+							<a href="wishlist"><span class="cart-total"><c:out value="${sessionScope.userWishCount}" default="0" /></span><i class="icon-heart"></i></a>
 						</div>
 						<div class="shopping-cart-wrap">
-							<a href="#"><i class="icon-basket-loaded"></i><span class="cart-total">2</span></a>
-							<ul class="mini-cart">
-								<li class="cart-item">
-									<div class="cart-image">
-										<a href="product-details/1"><img alt="" src="assets/images/product/product-02.png"></a>
-									</div>
-									<div class="cart-title">
-										<a href="product-details/1">
-											<h4>Product Name 01</h4>
-										</a>
-										<div class="quanti-price-wrap">
-											<span class="quantity">1 ×</span>
-											<div class="price-box">
-												<span class="new-price">$130.00</span>
-											</div>
-										</div>
-										<a class="remove_from_cart" href="#"><i class="icon_close"></i></a>
-									</div>
-								</li>
-								<li class="cart-item">
-									<div class="cart-image">
-										<a href="product-details/1"><img alt="" src="assets/images/product/product-03.png"></a>
-									</div>
-									<div class="cart-title">
-										<a href="product-details/1">
-											<h4>Product Name 03</h4>
-										</a>
-										<div class="quanti-price-wrap">
-											<span class="quantity">1 ×</span>
-											<div class="price-box">
-												<span class="new-price">$130.00</span>
-											</div>
-										</div>
-										<a class="remove_from_cart" href="#"><i class="icon-trash icons"></i></a>
-									</div>
-								</li>
-								<li class="subtotal-box">
-									<div class="subtotal-title">
-										<h3>Sub-Total :</h3>
-										<span>$ 260.99</span>
-									</div>
-								</li>
-								<li class="mini-cart-btns">
-									<div class="cart-btns">
-										<a href="cart">View cart</a><a href="checkout.html">Checkout</a>
-									</div>
-								</li>
+							<!-- 从session中取出用户的购物车数量 -->
+							<a href="cart"><i class="icon-basket-loaded"></i><span class="cart-total" id="cart_total"><c:out value="${sessionScope.userCart.size()}" default="0" /></span></a>
+							<!-- 头部购物车详细数据-开始 -->
+							<ul class="mini-cart" id="mini_cart">
+								
 							</ul>
+							<!-- 头部购物车详细数据-结束-->
 						</div>
 					</div>
 				</div>

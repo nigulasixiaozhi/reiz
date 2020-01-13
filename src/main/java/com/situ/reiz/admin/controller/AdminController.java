@@ -51,4 +51,9 @@ public class AdminController implements Serializable {
 			HttpServletResponse response) {
 		return adminService.doAdminLogin(userCode, userPass, isRemember, request, response);
 	}
+	@ResponseBody
+	@RequestMapping("/doAdminLoginOut")
+	public Integer doAdminLoginOut(HttpSession session) {
+		return adminService.doAdminLoginOut(session);
+	}
 }

@@ -35,8 +35,9 @@ public class MultipartUtils implements Serializable {
 			// 文件的后缀
 			String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
 			// 写出的文件地址#此路径应该写到数据库中
-			String filePath = "assets/uploads/" + Calendar.getInstance().getTimeInMillis() + suffix;
+			String filePath = ConfigUtils.PRODUCT_BASE_PATH + Calendar.getInstance().getTimeInMillis() + suffix;
 			//要写出的文件
+			//E:/webfiles/reiz/filereiz/product/1577933320098.png
 			File toFile = new File(realPath + filePath);
 			try {
 				//通过 transferTo 直接将文件写出

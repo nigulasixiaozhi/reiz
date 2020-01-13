@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.situ.reiz.order.dao.OrderDao">
+	<sql id="order_base_column">
+		ORDER_NUM,USER_CODE,LINK_NAME,LINK_PHONE,ORDER_DESC,SUM_PRICE,ADDRESS_ID,ORDER_STATUS,ACTIVE_FLAG,CREATE_BY, CREATE_DATE
+	</sql>
+	<sql id="order_base_select">
+		SELECT ROW_ID,
+		<include refid="order_base_column" />
+		, UPDATE_BY,UPDATE_DATE FROM TB_ORDER WHERE ACTIVE_FLAG = 1
+	</sql>
+	<insert id="save" parameterType="Order" useGeneratedKeys="true" keyProperty="rowId" keyColumn="ROW_ID">
+		INSERT INTO TB_ORDER(
+		<include refid="order_base_column" />
+		)
+		VALUES(#{orderNum},#{userCode},#{linkName},#{linkPhone},#{orderDesc},#{sumPrice},#{addressId},#{orderStatus},#{activeFlag},#{createBy},#{createDate})
+	</insert>
+	<insert id="update" parameterType="Order">
+		UPDATE TB_ORDER
+		<set>
+			<if test="orderNum!=null">
+				ORDER_NUM = #{orderNum},
+			</if>
+			<if test="userCode!=null">
+				USER_CODE = #{userCode},
+			</if>
+			<if test="linkName!=null">
+				LINK_NAME = #{linkName},
+			</if>
+			<if test="linkPhone!=null">
+				LINK_PHONE = #{linkPhone},
+			</if>
+			<if test="orderDesc!=null">
+				ORDER_DESC = #{orderDesc},
+			</if>
+			<if test="sumPrice!=null">
+				SUM_PRICE = #{sumPrice},
+			</if>
+			<if test="addressId!=null">
+				ADDRESS_ID = #{addressId},
+			</if>
+			<if test="orderStatus!=null">
+				ORDER_STATUS = #{orderStatus},
+			</if>
+			<if test="activeFlag!=null">
+				ACTIVE_FLAG = #{activeFlag},
+			</if>
+			<if test="updateBy!=null">
+				UPADTE_BY = #{updateBy},
+			</if>
+			<if test="updateDate!=null">
+				UPDATE_DATE = #{updateDate},
+			</if>
+		</set>
+		WHERE ROW_ID = #{rowId}
+	</insert>
+	<delete id="delete">
+		DELETE FROM TB_ORDER WHERE ROW_ID = #{rowId}
+	</delete>
+	<select id="find" resultType="Order">
+		<include refid="order_base_select" />
+		ORDER BY ORDER_NUM
+	</select>
+	<select id="get" resultType="Order">
+		<include refid="order_base_select" />
+		AND ROW_ID = #{rowId}
+	</select>
+	<select id="findByUser" resultType="Order">
+		<include refid="order_base_select" />
+		AND USER_CODE = #{userCode} ORDER BY ROW_ID ASC
+	</select>
+</mapper>

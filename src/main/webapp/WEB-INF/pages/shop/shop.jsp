@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html class="no-js" lang="en">
 <head>
@@ -41,8 +41,8 @@
 					<div class="col-12">
 						<!-- breadcrumb-list start -->
 						<ul class="breadcrumb-list">
-							<li class="breadcrumb-item"><a href="index.html">Home</a></li>
-							<li class="breadcrumb-item active">Shop Right sidebar</li>
+							<li class="breadcrumb-item"><a href="index">首页</a></li>
+							<li class="breadcrumb-item active">商品展示</li>
 						</ul>
 						<!-- breadcrumb-list end -->
 					</div>
@@ -50,6 +50,12 @@
 			</div>
 		</div>
 		<!-- breadcrumb-area end -->
+		<div class="alert alert-success alert-dismissible fade hide" style="position: absolute;left: 90px;top: 270px;" role="alert">
+			<strong>收藏成功!</strong> 您选中的商品已经放置到您的收藏列表中.
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
 		<!-- main-content-wrap start -->
 		<div class="main-content-wrap shop-page section-ptb">
 			<div class="container">
@@ -64,19 +70,20 @@
 									<!-- category-sub-menu start -->
 									<div class="category-sub-menu">
 										<ul>
-										<c:if test="${!empty menuList}">
-										<c:forEach items="${menuList}" var="menu">
-											<c:set value="${menu.childList}" var="childList"/>
-											<li class="has-sub"><a href="#">${menu.menuName}</a>
-												<ul>
-												<c:if test="${!empty childList}"  >
-												<c:forEach items="${childList}" var="childMenu">
-												<li><a href="#">${childMenu.menuName}</a></li>
+											<c:if test="${!empty menuList}">
+												<c:forEach items="${menuList}" var="menu">
+													<%-- List<Menu>childList = menu.childList --%>
+													<c:set var="childList" value="${menu.childList}" />
+													<li class="has-sub"><a href="#">${menu.menuName}</a>
+														<ul>
+															<c:if test="${!empty childList}">
+																<c:forEach items="${childList}" var="childMenu">
+																	<li><a href="#">${childMenu.menuName}</a></li>
+																</c:forEach>
+															</c:if>
+														</ul></li>
 												</c:forEach>
-												</c:if>
-												</ul></li>
-										</c:forEach>
-										</c:if>
+											</c:if>
 										</ul>
 									</div>
 									<!-- category-sub-menu end -->
@@ -177,34 +184,35 @@
 										<div class="shop-product-wrap">
 											<div class="row">
 												<c:if test="${!empty productList}">
-												<c:forEach items="${productList}" var="product">
-												<div class="col-lg-4 col-md-6">
-													<!-- single-product-area start -->
-													<div class="single-product-area mt-30">
-														<div class="product-thumb">
-															<a href="product-details.jsp"><img class="primary-image" src="${product.proPath}" alt=""></a>
-															<div class="label-product label_new">New</div>
-															<div class="action-links">
-																<a href="cart.html" class="cart-btn" title="Add to Cart"><i class="icon-basket-loaded"></i></a><a href="wishlist.html" class="wishlist-btn" title="Add to Wish List"><i class="icon-heart"></i></a><a href="#" class="quick-view" title="Quick View" data-toggle="modal" data-target="#exampleModalCenter"><i class="icon-magnifier icons"></i></a>
+													<c:forEach items="${productList}" var="product">
+														<div class="col-lg-4 col-md-6">
+															<!-- single-product-area start -->
+															<div class="single-product-area mt-30">
+																<div class="product-thumb">
+																	<a href="product-details.jsp"><img class="primary-image" src="${product.proPath}" alt=""></a>
+																	<div class="label-product label_new">New</div>
+																	<div class="action-links">
+																		<a href="javascript:addCart(${product.rowId});" class="cart-btn" title="加入购物车"><i class="icon-basket-loaded"></i></a> 
+																		<a href="javascript:addWish(${product.proCode});" class="wishlist-btn" title="加入收藏"><i class="icon-heart"></i></a><a href="#" class="quick-view" title="Quick View" data-toggle="modal" data-target="#exampleModalCenter"><i class="icon-magnifier icons"></i></a>
+																	</div>
+																	<ul class="watch-color">
+																		<li class="twilight"><span></span></li>
+																		<li class="portage"><span></span></li>
+																		<li class="pigeon"><span></span></li>
+																	</ul>
+																</div>
+																<div class="product-caption">
+																	<h4 class="product-name">
+																		<a href="product-details.jsp">${product.proName}</a>
+																	</h4>
+																	<div class="price-box">
+																		<span class="new-price">￥${product.newPrice}</span><span class="old-price">￥${product.oldPrice}</span>
+																	</div>
+																</div>
 															</div>
-															<ul class="watch-color">
-																<li class="twilight"><span></span></li>
-																<li class="portage"><span></span></li>
-																<li class="pigeon"><span></span></li>
-															</ul>
+															<!-- single-product-area end -->
 														</div>
-														<div class="product-caption">
-															<h4 class="product-name">
-																<a href="product-details.jsp">${product.proName}</a>
-															</h4>
-															<div class="price-box">
-																<span class="new-price">￥${product.newPrice}</span><span class="old-price">￥${product.oldPrice}</span>
-															</div>
-														</div>
-													</div>
-													<!-- single-product-area end -->
-												</div>
-												</c:forEach>
+													</c:forEach>
 												</c:if>
 											</div>
 										</div>
@@ -459,5 +467,8 @@
 	<!--<script src="assets/js/vendor/vendor.min.js"></script><script src="assets/js/plugins/plugins.min.js"></script>-->
 	<!-- Main JS -->
 	<script src="assets/js/main.js"></script>
+	<!-- 引入自书写的全局使用的头部脚本 -->
+	<script src="assets/js/shop/head.js"></script>
+	<script type="text/javascript" src="assets/js/shop/shop.js"></script>
 </body>
 </html>

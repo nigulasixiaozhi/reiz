@@ -41,7 +41,7 @@
 					<div class="col-12">
 						<!-- breadcrumb-list start -->
 						<ul class="breadcrumb-list">
-							<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+							<li class="breadcrumb-item"><a href="index">首页</a></li>
 							<li class="breadcrumb-item active">Product Details</li>
 						</ul>
 						<!-- breadcrumb-list end -->
@@ -546,5 +546,7 @@
 	<!--<script src="assets/js/vendor/vendor.min.js"></script><script src="assets/js/plugins/plugins.min.js"></script>-->
 	<!-- Main JS -->
 	<script src="assets/js/main.js"></script>
+	<!-- 引入自书写的全局使用的头部脚本 -->
+	<script src="assets/js/shop/head.js"></script>
 </body>
 </html>

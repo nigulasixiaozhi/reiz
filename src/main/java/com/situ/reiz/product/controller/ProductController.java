@@ -15,6 +15,7 @@ import com.situ.reiz.menu.domain.Menu;
 import com.situ.reiz.menu.service.MenuService;
 import com.situ.reiz.product.param.ProductParam;
 import com.situ.reiz.product.service.ProductService;
+import com.situ.reiz.util.ConfigUtils;
 import com.situ.reiz.util.ContextUtils;
 
 @Controller
@@ -45,7 +46,8 @@ public class ProductController implements Serializable {
 	@ResponseBody
 	@RequestMapping("/add")
 	public Long saveProduct(ProductParam productParam, HttpServletRequest request) {
-		String realPath = request.getServletContext().getRealPath("/");
+		//String realPath = request.getServletContext().getRealPath("/");
+		String realPath = ConfigUtils.FILE_BASE_PATH;
 		String createBy = ContextUtils.getUserCode();
 		return this.productService.saveProduct(productParam, realPath, createBy);
 	}
@@ -59,7 +61,7 @@ public class ProductController implements Serializable {
 
 	@ResponseBody
 	@RequestMapping("/changline/{rowId}/{isLine}")
-	public Integer doChangeLine(@PathVariable Long rowId,@PathVariable Integer isLine) {
+	public Integer doChangeLine(@PathVariable Long rowId, @PathVariable Integer isLine) {
 		return this.productService.changeLine(rowId, isLine);
 	}
 }

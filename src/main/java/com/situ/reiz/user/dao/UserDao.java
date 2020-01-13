@@ -20,4 +20,8 @@ public interface UserDao extends BaseDao<User> {
 	User findByCodeAndRowId(@Param("userCode") String userCode, @Param("rowId") Long rowId);
 
 	User findByCode(String userCode);
+
+	void update4Lock(@Param("rowId")Long rowId, @Param("isLock")Integer isLock);
+	
+	void updatePass(@Param("userCode") String userCode, @Param("userPass") String userPass);
 }

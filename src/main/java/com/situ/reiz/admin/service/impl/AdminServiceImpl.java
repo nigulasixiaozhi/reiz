@@ -30,8 +30,7 @@ public class AdminServiceImpl implements AdminService {
 	 * @return 1:可以登录;2:被锁定;3:权限不够，不允许登录;4:用户名或密码错误;
 	 */
 	@Override
-	public Integer doAdminLogin(String userCode, String userPass, Integer isRemeber, HttpServletRequest request,
-			HttpServletResponse response) {
+	public Integer doAdminLogin(String userCode, String userPass, Integer isRemeber, HttpServletRequest request, HttpServletResponse response) {
 		Integer result = 0;
 		User user = userDao.findByCodeAndPass(userCode, MD5Utils.encode(userPass));
 		if (user != null) {
@@ -58,6 +57,18 @@ public class AdminServiceImpl implements AdminService {
 			result = 4;
 		}
 		return result;
+	}
+
+	/**
+	 * @Title: doAdminLoginOut 
+	 * @Description:(管理员退出登录)
+	 * @param session
+	 * @return
+	 */
+	@Override
+	public Integer doAdminLoginOut(HttpSession session) {
+		session.removeAttribute(ConfigUtils.SESSION_ADMIN_LOGIN);
+		return 1;
 	}
 
 }

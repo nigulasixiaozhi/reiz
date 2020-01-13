@@ -17,6 +17,8 @@ import com.situ.reiz.address.domain.Address;
 public interface AddressService {
 	Long saveAddress(Address address, String createBy);
 
+	Integer doPutAddress(Address address, String createBy);
+
 	List<Address> findAddressByUser(String userCode);
 
 	Integer doSetDefaultAddress(Long rowId, String userCode);

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.situ.reiz.order.dao.OrderDetailDao">
+	<sql id="orderdetail_base_column">
+		ORDER_ID,PRODUCT_ID,ORDER_COUNT,SUM_PRICE,ACTIVE_FLAG,CREATE_BY, CREATE_DATE
+	</sql>
+	<sql id="orderdetail_base_select">
+		SELECT ROW_ID,
+		<include refid="orderdetail_base_column" />
+		, UPDATE_BY,UPDATE_DATE FROM TB_ORDER_DETAIL WHERE ACTIVE_FLAG = 1
+	</sql>
+	<sql id="orderdetail_view_select">
+		SELECT ROW_ID,
+		<include refid="orderdetail_base_column" />
+		,PRO_NAME,NEW_PRICE,PRO_PATH,UPDATE_BY,UPDATE_DATE
+		FROM V_ORDER_DETAIL WHERE ACTIVE_FLAG = 1
+	</sql>
+	<insert id="save" parameterType="OrderDetail" useGeneratedKeys="true" keyProperty="rowId" keyColumn="ROW_ID">
+		INSERT INTO TB_ORDER_DETAIL(
+		<include refid="orderdetail_base_column" />
+		)
+		VALUES(#{orderId},#{productId},#{orderCount},#{sumPrice},#{activeFlag},#{createBy},#{createDate})
+	</insert>
+	<insert id="saveBatch">
+		INSERT INTO TB_ORDER_DETAIL(
+		<include refid="orderdetail_base_column" />
+		)VALUES
+		<foreach collection="orderDetailList" separator="," item="orderDetail">
+			(#{orderDetail.orderId},#{orderDetail.productId},#{orderDetail.orderCount},#{orderDetail.sumPrice},#{orderDetail.activeFlag},#{orderDetail.createBy},#{orderDetail.createDate})
+		</foreach>
+	</insert>
+	<insert id="update" parameterType="OrderDetail">
+		UPDATE TB_ORDER_DETAIL
+		<set>
+			<if test="orderId!=null">
+				ORDER_ID = #{orderId},
+			</if>
+			<if test="productId!=null">
+				PRODUCT_ID = #{productId},
+			</if>
+			<if test="orderCount!=null">
+				ORDER_COUNT = #{orderCount},
+			</if>
+			<if test="sumPrice!=null">
+				SUM_PRICE= #{sumPrice},
+			</if>
+			<if test="activeFlag!=null">
+				ACTIVE_FLAG = #{activeFlag},
+			</if>
+			<if test="updateBy!=null">
+				UPADTE_BY = #{updateBy},
+			</if>
+			<if test="updateDate!=null">
+				UPDATE_DATE = #{updateDate},
+			</if>
+		</set>
+		WHERE ROW_ID = #{rowId}
+	</insert>
+	<delete id="delete">
+		DELETE FROM TB_ORDER_DETAIL WHERE ROW_ID = #{rowId}
+	</delete>
+	<select id="find" resultType="OrderDetail">
+		<include refid="orderdetail_base_select" />
+		ORDER BY ORDER_NUM
+	</select>
+	<select id="get" resultType="OrderDetail">
+		<include refid="orderdetail_base_select" />
+		AND ROW_ID = #{rowId}
+	</select>
+	<select id="findByOrder" resultType="OrderDetail">
+		<include refid="orderdetail_view_select"/>
+		AND ORDER_ID = #{orderId}
+	</select>
+</mapper>

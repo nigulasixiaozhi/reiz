@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html class="no-js" lang="en">
 <head>
@@ -40,8 +41,8 @@
 					<div class="col-12">
 						<!-- breadcrumb-list start -->
 						<ul class="breadcrumb-list">
-							<li class="breadcrumb-item"><a href="index.html">Home</a></li>
-							<li class="breadcrumb-item active">Wishlist Page</li>
+							<li class="breadcrumb-item"><a href="index">首页</a></li>
+							<li class="breadcrumb-item active">我的收藏</li>
 						</ul>
 						<!-- breadcrumb-list end -->
 					</div>
@@ -59,39 +60,27 @@
 								<table class="table">
 									<thead>
 										<tr>
-											<th class="plantmore-product-thumbnail">Images</th>
-											<th class="cart-product-name">Product</th>
-											<th class="plantmore-product-price">Unit Price</th>
-											<th class="plantmore-product-stock-status">Stock Status</th>
-											<th class="plantmore-product-add-cart">Add to cart</th>
-											<th class="plantmore-product-remove">Remove</th>
+											<th class="plantmore-product-thumbnail">商品图片</th>
+											<th class="cart-product-name">商品名称</th>
+											<th class="plantmore-product-price">商品售价</th>
+											<th class="plantmore-product-stock-status">状态</th>
+											<th class="plantmore-product-add-cart">购物车</th>
+											<th class="plantmore-product-remove">移除</th>
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td class="plantmore-product-thumbnail"><a href="#"><img src="assets/images/other/02.jpg" alt=""></a></td>
-											<td class="plantmore-product-name"><a href="#">Nullam maximus</a></td>
-											<td class="plantmore-product-price"><span class="amount">$23.39</span></td>
-											<td class="plantmore-product-stock-status"><span class="in-stock">in stock</span></td>
-											<td class="plantmore-product-add-cart"><a href="#">add to cart</a></td>
-											<td class="plantmore-product-remove"><a href="#"><i class="fa fa-times"></i></a></td>
+									<c:if test="${!empty wishList}">
+									<c:forEach items="${wishList}" var="wish">
+										<tr id="wishtr${wish.rowId}">
+											<td class="plantmore-product-thumbnail"><a href="#"><img src="${wish.proPath}" alt="" width="40"></a></td>
+											<td class="plantmore-product-name"><a href="#">${wish.proName}</a></td>
+											<td class="plantmore-product-price"><span class="amount">￥${wish.newPrice}</span></td>
+											<td class="plantmore-product-stock-status"><span class="in-stock">${wish.isLine==1?'上架':'下架'}</span></td>
+											<td class="plantmore-product-add-cart"><a href="#">加入购物车</a></td>
+											<td class="plantmore-product-remove"><a href="javascript:removeWish(${wish.rowId});"><i class="fa fa-times"></i></a></td>
 										</tr>
-										<tr>
-											<td class="plantmore-product-thumbnail"><a href="#"><img src="assets/images/other/01.jpg" alt=""></a></td>
-											<td class="plantmore-product-name"><a href="#">Natus erro</a></td>
-											<td class="plantmore-product-price"><span class="amount">$30.50</span></td>
-											<td class="plantmore-product-stock-status"><span class="in-stock">in stock</span></td>
-											<td class="plantmore-product-add-cart"><a href="#">add to cart</a></td>
-											<td class="plantmore-product-remove"><a href="#"><i class="fa fa-times"></i></a></td>
-										</tr>
-										<tr>
-											<td class="plantmore-product-thumbnail"><a href="#"><img src="assets/images/other/03.jpg" alt=""></a></td>
-											<td class="plantmore-product-name"><a href="#">Sit voluptatem</a></td>
-											<td class="plantmore-product-price"><span class="amount">$40.19</span></td>
-											<td class="plantmore-product-stock-status"><span class="out-stock">out stock</span></td>
-											<td class="plantmore-product-add-cart"><a href="#">add to cart</a></td>
-											<td class="plantmore-product-remove"><a href="#"><i class="fa fa-times"></i></a></td>
-										</tr>
+									</c:forEach>
+									</c:if>
 									</tbody>
 								</table>
 							</div>
@@ -125,5 +114,8 @@
 	<!--<script src="assets/js/vendor/vendor.min.js"></script><script src="assets/js/plugins/plugins.min.js"></script>-->
 	<!-- Main JS -->
 	<script src="assets/js/main.js"></script>
+	<!-- 引入自书写的全局使用的头部脚本 -->
+	<script src="assets/js/shop/head.js"></script>
+	<script type="text/javascript" src="assets/js/shop/wishlist.js"></script>
 </body>
 </html>

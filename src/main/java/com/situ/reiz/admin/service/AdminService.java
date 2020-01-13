@@ -2,6 +2,7 @@ package com.situ.reiz.admin.service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public interface AdminService {
 	/**
@@ -13,6 +14,13 @@ public interface AdminService {
 	 * @param response
 	 * @return
 	 */
-	Integer doAdminLogin(String userCode, String userPass, Integer isRemeber, HttpServletRequest request,
-			HttpServletResponse response);
+	Integer doAdminLogin(String userCode, String userPass, Integer isRemeber, HttpServletRequest request, HttpServletResponse response);
+
+	/**
+	 * @Title: doAdminLoginOut 
+	 * @Description:(管理员退出登录)
+	 * @param session
+	 * @return
+	 */
+	Integer doAdminLoginOut(HttpSession session);
 }

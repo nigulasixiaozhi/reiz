@@ -32,6 +32,12 @@ public class AddressController implements Serializable {
 	@Autowired
 	private AddressService addressService;
 
+	/**
+	 * @Title: findAllAddress 
+	 * @Description:(查询列表数据)
+	 * @param modelAndView
+	 * @return
+	 */
 	@RequestMapping("/list")
 	public ModelAndView findAllAddress(ModelAndView modelAndView) {
 		String userCode = ContextUtils.getUserCode(ConfigUtils.SESSION_USER_LOGIN);
@@ -40,6 +46,12 @@ public class AddressController implements Serializable {
 		return modelAndView;
 	}
 
+	/**
+	 * @Title: doAddAddress 
+	 * @Description:(新增数据)
+	 * @param address
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("/add")
 	public Long doAddAddress(Address address) {
@@ -48,15 +60,42 @@ public class AddressController implements Serializable {
 		return this.addressService.saveAddress(address, userCode);
 	}
 
+	/**
+	 * @Title: setDefaultAddress 
+	 * @Description:(设置为默认)
+	 * @param rowId
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("/default/{rowId}")
 	public Integer setDefaultAddress(@PathVariable Long rowId) {
 		String userCode = ContextUtils.getUserCode(ConfigUtils.SESSION_USER_LOGIN);
-		return this.addressService.doSetDefaultAddress(rowId,userCode);
+		return this.addressService.doSetDefaultAddress(rowId, userCode);
 	}
+
+	/**
+	 * @Title: getAddressById 
+	 * @Description:(根据ID查询实例)
+	 * @param rowId
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("/get/{rowId}")
 	public Address getAddressById(@PathVariable Long rowId) {
 		return this.addressService.getAddressById(rowId);
+	}
+
+	/**
+	 * @Title: doAddAddress 
+	 * @Description:(更新数据)
+	 * @param address
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/update")
+	public Integer doPutAddress(Address address) {
+		String userCode = ContextUtils.getUserCode(ConfigUtils.SESSION_USER_LOGIN);
+		address.setUserCode(userCode);
+		return this.addressService.doPutAddress(address, userCode);
 	}
 }
