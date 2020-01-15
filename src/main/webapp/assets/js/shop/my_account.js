@@ -203,7 +203,7 @@ function showOrderDetail(rowId){
 	$.ajax({
 		url:'orderdetail/'+rowId,
 		success:function(htmlData){
-			$('#tbody_order_detail_table').html(htmlData);
+			$('#order_detail_body').html(htmlData);
 			$('#modal_order_detail').modal('show');
 		}
 	});

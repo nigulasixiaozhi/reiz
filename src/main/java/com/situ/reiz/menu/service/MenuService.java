@@ -14,4 +14,6 @@ public interface MenuService {
 	String checkMenuName(FieldParam fieldParam, Long parentId);
 
 	List<Menu> findMenuByParent(Long parentId);
+
+	Menu getMenuById(Long rowId);
 }

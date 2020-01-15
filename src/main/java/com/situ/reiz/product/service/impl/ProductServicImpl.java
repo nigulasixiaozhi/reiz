@@ -19,6 +19,7 @@ import com.situ.reiz.product.param.ProductParam;
 import com.situ.reiz.product.service.ProductService;
 import com.situ.reiz.util.CalendarUtils;
 import com.situ.reiz.util.MultipartUtils;
+import com.situ.reiz.util.MyBatisUtils;
 
 /** 
  * @ClassName:ProductServicImpl 
@@ -38,7 +39,7 @@ public class ProductServicImpl implements ProductService {
 	@Override
 	public Long saveProduct(ProductParam productParam, String realPath, String createBy) {
 		CommonsMultipartFile proPathFile = productParam.getProPathFile();
-		if (proPathFile != null) {
+		if (!proPathFile.isEmpty()) {
 			//写出文件
 			String filePath = MultipartUtils.writeFile(proPathFile, realPath);
 			productParam.setProPath(filePath);
@@ -52,13 +53,32 @@ public class ProductServicImpl implements ProductService {
 	}
 
 	@Override
+	public Long updateProduct(ProductParam productParam, String realPath, String createBy) {
+		Product editProduct = productDao.get(productParam.getRowId());
+		editProduct = MyBatisUtils.buildEditData(editProduct, productParam);
+		CommonsMultipartFile proPathFile = productParam.getProPathFile();
+		if (!proPathFile.isEmpty()) {
+			//写出文件
+			String filePath = MultipartUtils.writeFile(proPathFile, realPath);
+			editProduct.setProPath(filePath);
+		}
+		this.productDao.update(editProduct);
+		return editProduct.getRowId();
+	}
+
+	@Override
 	public List<Product> findAllProduct() {
 		return this.productDao.find();
 	}
 
+	@Override
+	public Product getProductById(Long rowId) {
+		return productDao.get(rowId);
+	}
+
 	/** 
 	 * @Title: changeLine 
-	 * @Description:(这里用一句话描述这个方法的作用)
+	 * @Description:(修改上下架)
 	 * @param rowId
 	 * @param isLine
 	 * @return  

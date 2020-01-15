@@ -50,7 +50,7 @@
 			</div>
 		</div>
 		<!-- breadcrumb-area end -->
-		<div class="alert alert-success alert-dismissible fade hide" style="position: absolute;left: 90px;top: 270px;" role="alert">
+		<div class="alert alert-success alert-dismissible fade hide" style="position: absolute; left: 90px; top: 270px;" role="alert">
 			<strong>收藏成功!</strong> 您选中的商品已经放置到您的收藏列表中.
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 				<span aria-hidden="true">&times;</span>
@@ -179,21 +179,24 @@
 							</div>
 							<!-- shop-products-wrap start -->
 							<div class="shop-products-wrap">
-								<div class="tab-content">
+								<div class="tab-content" id="tab_content_product_list">
 									<div class="tab-pane active" id="grid">
 										<div class="shop-product-wrap">
 											<div class="row">
+												<!-- 放置在session中的用户收藏的id集合 -->
+												<c:set var="wishProList" value="${sessionScope.userWishProList}"/>
 												<c:if test="${!empty productList}">
 													<c:forEach items="${productList}" var="product">
 														<div class="col-lg-4 col-md-6">
 															<!-- single-product-area start -->
 															<div class="single-product-area mt-30">
 																<div class="product-thumb">
-																	<a href="product-details.jsp"><img class="primary-image" src="${product.proPath}" alt=""></a>
+																	<a href="product-details/${product.rowId}"><img class="primary-image" src="${product.proPath}" alt=""></a>
 																	<div class="label-product label_new">New</div>
 																	<div class="action-links">
 																		<a href="javascript:addCart(${product.rowId});" class="cart-btn" title="加入购物车"><i class="icon-basket-loaded"></i></a> 
-																		<a href="javascript:addWish(${product.proCode});" class="wishlist-btn" title="加入收藏"><i class="icon-heart"></i></a><a href="#" class="quick-view" title="Quick View" data-toggle="modal" data-target="#exampleModalCenter"><i class="icon-magnifier icons"></i></a>
+																		<a href="javascript:;" data-action="wish-action" data-prod="${product.proCode}" class="wishlist-btn" title="收藏"><i class="${wishProList.contains(product.proCode)?'fa fa-heart text-danger':'fa fa-heart-o'}"></i></a>
+																		<a href="#" class="quick-view" title="Quick View" data-toggle="modal" data-target="#exampleModalCenter"><i class="icon-magnifier icons"></i></a>
 																	</div>
 																	<ul class="watch-color">
 																		<li class="twilight"><span></span></li>
@@ -203,7 +206,7 @@
 																</div>
 																<div class="product-caption">
 																	<h4 class="product-name">
-																		<a href="product-details.jsp">${product.proName}</a>
+																		<a href="product-details/${product.rowId}">${product.proName}</a>
 																	</h4>
 																	<div class="price-box">
 																		<span class="new-price">￥${product.newPrice}</span><span class="old-price">￥${product.oldPrice}</span>
@@ -219,204 +222,64 @@
 									</div>
 									<div class="tab-pane" id="list">
 										<div class="shop-product-list-wrap">
-											<div class="row product-layout-list mt-30">
-												<div class="col-lg-3 col-md-3">
-													<!-- single-product-wrap start -->
-													<div class="single-product">
-														<div class="product-image">
-															<a href="product-details.jsp"><img src="assets/images/product/product-01.png" alt="Produce Images"></a>
+											<c:if test="${!empty productList}">
+												<!-- 从session中取出当前用户收藏的商品CODE集合 -->
+												<c:set var="wishProList" value="${sessionScope.userWishProList}"/>
+												<c:forEach items="${productList}" var="product">
+													<div class="row product-layout-list mt-30">
+														<div class="col-lg-3 col-md-3">
+															<!-- single-product-wrap start -->
+															<div class="single-product">
+																<div class="product-image">
+																	<a href="product-details/${product.rowId}"><img src="${product.proPath}" alt="Produce Images"></a>
+																</div>
+															</div>
+															<!-- single-product-wrap end -->
 														</div>
-													</div>
-													<!-- single-product-wrap end -->
-												</div>
-												<div class="col-lg-6 col-md-6">
-													<div class="product-content-list text-left">
-														<h4>
-															<a href="product-details.jsp" class="product-name">Auctor gravida enim</a>
-														</h4>
-														<div class="price-box">
-															<span class="new-price">$99.00</span><span class="old-price">$110.00</span>
+														<div class="col-lg-6 col-md-6">
+															<div class="product-content-list text-left">
+																<h4>
+																	<a href="product-details/${product.rowId}" class="product-name">${product.proName}</a>
+																</h4>
+																<div class="price-box">
+																	<span class="new-price">￥${product.newPrice}</span><span class="old-price">￥${product.oldPrice}</span>
+																</div>
+																<div class="product-rating">
+																	<ul class="d-flex">
+																		<li><a href="#"><i class="icon-star"></i></a></li>
+																		<li><a href="#"><i class="icon-star"></i></a></li>
+																		<li><a href="#"><i class="icon-star"></i></a></li>
+																		<li><a href="#"><i class="icon-star"></i></a></li>
+																		<li class="bad-reting"><a href="#"><i class="icon-star"></i></a></li>
+																	</ul>
+																</div>
+																<p>${product.proInfo}</p>
+															</div>
 														</div>
-														<div class="product-rating">
-															<ul class="d-flex">
-																<li><a href="#"><i class="icon-star"></i></a></li>
-																<li><a href="#"><i class="icon-star"></i></a></li>
-																<li><a href="#"><i class="icon-star"></i></a></li>
-																<li><a href="#"><i class="icon-star"></i></a></li>
-																<li class="bad-reting"><a href="#"><i class="icon-star"></i></a></li>
-															</ul>
-														</div>
-														<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto suscipit aliquam, dignissimos nesciunt, quos voluptas tenetur necessitatibus voluptate vitae quo quibusdam nihil.</p>
-													</div>
-												</div>
-												<div class="col-lg-3 col-md-3">
-													<div class="block2">
-														<ul class="stock-cont">
-															<li class="product-sku">Sku: <span>P006</span></li>
-															<li class="product-stock-status">Availability: <span class="in-stock">In Stock</span></li>
-														</ul>
-														<div class="product-button">
-															<ul class="actions">
-																<li class="add-to-wishlist"><a href="wishlist.html" class="add_to_wishlist"><i class="icon-heart"></i>Add to Wishlist</a></li>
-															</ul>
-															<div class="add-to-cart">
-																<div class="product-button-action">
-																	<a href="#" class="add-to-cart">Add to cart</a>
+														<div class="col-lg-3 col-md-3">
+															<div class="block2">
+																<ul class="stock-cont">
+																	<li class="product-sku">Sku: <span>P006</span></li>
+																	<li class="product-stock-status">Availability: <span class="in-stock">In Stock</span></li>
+																</ul>
+																<div class="product-button">
+																	<ul class="actions">
+																		<li class="add-to-wishlist">
+																		<!-- 判断如果当前的商品CODE在这个集合中，则判断此商品已经完成收藏。 -->
+																		<a href="javascript:;" data-action="wish-action" data-prod="${product.proCode}" class="add_to_wishlist"><i class="${wishProList.contains(product.proCode)?'fa fa-heart text-danger':'fa fa-heart-o'}"></i>收藏</a>
+																		</li>
+																	</ul>
+																	<div class="add-to-cart">
+																		<div class="product-button-action">
+																			<a href="javascript:addCart(${product.rowId});" class="add-to-cart">加入购物车</a>
+																		</div>
+																	</div>
 																</div>
 															</div>
 														</div>
 													</div>
-												</div>
-											</div>
-										</div>
-										<div class="shop-product-list-wrap">
-											<div class="row product-layout-list mt-30">
-												<div class="col-lg-3 col-md-3">
-													<!-- single-product-wrap start -->
-													<div class="single-product">
-														<div class="product-image">
-															<a href="product-details.jsp"><img src="assets/images/product/product-02.png" alt="Produce Images"></a>
-														</div>
-													</div>
-													<!-- single-product-wrap end -->
-												</div>
-												<div class="col-lg-6 col-md-6">
-													<div class="product-content-list text-left">
-														<h4>
-															<a href="product-details.jsp" class="product-name">Auctor gravida enim</a>
-														</h4>
-														<div class="price-box">
-															<span class="new-price">$99.00</span><span class="old-price">$110.00</span>
-														</div>
-														<div class="product-rating">
-															<ul class="d-flex">
-																<li><a href="#"><i class="icon-star"></i></a></li>
-																<li><a href="#"><i class="icon-star"></i></a></li>
-																<li><a href="#"><i class="icon-star"></i></a></li>
-																<li><a href="#"><i class="icon-star"></i></a></li>
-																<li class="bad-reting"><a href="#"><i class="icon-star"></i></a></li>
-															</ul>
-														</div>
-														<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto suscipit aliquam, dignissimos nesciunt, quos voluptas tenetur necessitatibus voluptate vitae quo quibusdam nihil.</p>
-													</div>
-												</div>
-												<div class="col-lg-3 col-md-3">
-													<div class="block2">
-														<ul class="stock-cont">
-															<li class="product-sku">Sku: <span>P006</span></li>
-															<li class="product-stock-status">Availability: <span class="in-stock">In Stock</span></li>
-														</ul>
-														<div class="product-button">
-															<ul class="actions">
-																<li class="add-to-wishlist"><a href="wishlist.html" class="add_to_wishlist"><i class="icon-heart"></i>Add to Wishlist</a></li>
-															</ul>
-															<div class="add-to-cart">
-																<div class="product-button-action">
-																	<a href="#" class="add-to-cart">Add to cart</a>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-											<div class="row product-layout-list mt-30">
-												<div class="col-lg-3 col-md-3">
-													<!-- single-product-wrap start -->
-													<div class="single-product">
-														<div class="product-image">
-															<a href="product-details.jsp"><img src="assets/images/product/product-03.png" alt="Produce Images"></a>
-														</div>
-													</div>
-													<!-- single-product-wrap end -->
-												</div>
-												<div class="col-lg-6 col-md-6">
-													<div class="product-content-list text-left">
-														<h4>
-															<a href="product-details.jsp" class="product-name">Auctor gravida enim</a>
-														</h4>
-														<div class="price-box">
-															<span class="new-price">$99.00</span><span class="old-price">$110.00</span>
-														</div>
-														<div class="product-rating">
-															<ul class="d-flex">
-																<li><a href="#"><i class="icon-star"></i></a></li>
-																<li><a href="#"><i class="icon-star"></i></a></li>
-																<li><a href="#"><i class="icon-star"></i></a></li>
-																<li><a href="#"><i class="icon-star"></i></a></li>
-																<li class="bad-reting"><a href="#"><i class="icon-star"></i></a></li>
-															</ul>
-														</div>
-														<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto suscipit aliquam, dignissimos nesciunt, quos voluptas tenetur necessitatibus voluptate vitae quo quibusdam nihil.</p>
-													</div>
-												</div>
-												<div class="col-lg-3 col-md-3">
-													<div class="block2">
-														<ul class="stock-cont">
-															<li class="product-sku">Sku: <span>P006</span></li>
-															<li class="product-stock-status">Availability: <span class="in-stock">In Stock</span></li>
-														</ul>
-														<div class="product-button">
-															<ul class="actions">
-																<li class="add-to-wishlist"><a href="wishlist.html" class="add_to_wishlist"><i class="icon-heart"></i>Add to Wishlist</a></li>
-															</ul>
-															<div class="add-to-cart">
-																<div class="product-button-action">
-																	<a href="#" class="add-to-cart">Add to cart</a>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-											<div class="row product-layout-list mt-30">
-												<div class="col-lg-3 col-md-3">
-													<!-- single-product-wrap start -->
-													<div class="single-product">
-														<div class="product-image">
-															<a href="product-details.jsp"><img src="assets/images/product/product-04.png" alt="Produce Images"></a>
-														</div>
-													</div>
-													<!-- single-product-wrap end -->
-												</div>
-												<div class="col-lg-6 col-md-6">
-													<div class="product-content-list text-left">
-														<h4>
-															<a href="product-details.jsp" class="product-name">Auctor gravida enim</a>
-														</h4>
-														<div class="price-box">
-															<span class="new-price">$99.00</span><span class="old-price">$110.00</span>
-														</div>
-														<div class="product-rating">
-															<ul class="d-flex">
-																<li><a href="#"><i class="icon-star"></i></a></li>
-																<li><a href="#"><i class="icon-star"></i></a></li>
-																<li><a href="#"><i class="icon-star"></i></a></li>
-																<li><a href="#"><i class="icon-star"></i></a></li>
-																<li class="bad-reting"><a href="#"><i class="icon-star"></i></a></li>
-															</ul>
-														</div>
-														<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto suscipit aliquam, dignissimos nesciunt, quos voluptas tenetur necessitatibus voluptate vitae quo quibusdam nihil.</p>
-													</div>
-												</div>
-												<div class="col-lg-3 col-md-3">
-													<div class="block2">
-														<ul class="stock-cont">
-															<li class="product-sku">Sku: <span>P006</span></li>
-															<li class="product-stock-status">Availability: <span class="in-stock">In Stock</span></li>
-														</ul>
-														<div class="product-button">
-															<ul class="actions">
-																<li class="add-to-wishlist"><a href="wishlist.html" class="add_to_wishlist"><i class="icon-heart"></i>Add to Wishlist</a></li>
-															</ul>
-															<div class="add-to-cart">
-																<div class="product-button-action">
-																	<a href="#" class="add-to-cart">Add to cart</a>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
+												</c:forEach>
+											</c:if>
 										</div>
 									</div>
 								</div>
@@ -467,8 +330,11 @@
 	<!--<script src="assets/js/vendor/vendor.min.js"></script><script src="assets/js/plugins/plugins.min.js"></script>-->
 	<!-- Main JS -->
 	<script src="assets/js/main.js"></script>
+	<!-- 自己定义的 jQuery的ajax方法的重写 -->
+	<script src="assets/js/shop/rezi-ajax.js"></script>
 	<!-- 引入自书写的全局使用的头部脚本 -->
 	<script src="assets/js/shop/head.js"></script>
-	<script type="text/javascript" src="assets/js/shop/shop.js"></script>
+	<script src="assets/js/shop/shop.js"></script>
+	<script src="assets/js/shop/shop_wish_cart.js"></script>
 </body>
 </html>

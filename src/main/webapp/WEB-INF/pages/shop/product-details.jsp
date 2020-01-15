@@ -42,7 +42,7 @@
 						<!-- breadcrumb-list start -->
 						<ul class="breadcrumb-list">
 							<li class="breadcrumb-item"><a href="index">首页</a></li>
-							<li class="breadcrumb-item active">Product Details</li>
+							<li class="breadcrumb-item active">商品详情</li>
 						</ul>
 						<!-- breadcrumb-list end -->
 					</div>
@@ -95,7 +95,7 @@
 					<div class="col-lg-7 col-md-6">
 						<div class="product-details-view-content">
 							<div class="product-info">
-								<h3>Ornare sed consequat</h3>
+								<h3>${product.proName}</h3>
 								<div class="product-rating d-flex">
 									<ul class="d-flex">
 										<li><a href="#"><i class="icon-star"></i></a></li>
@@ -108,21 +108,25 @@
 									</a>
 								</div>
 								<div class="price-box">
-									<span class="new-price">$70.00</span><span class="old-price">$78.00</span>
+									<span class="new-price">￥ ${product.newPrice}</span><span class="old-price">￥ ${product.oldPrice}</span>
 								</div>
 								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam fringilla augue nec est tristique auctor. Donec non est at libero vulputate rutrum. Morbi ornare lectus quis justo gravida semper. Nulla tellus mi, vulputate adipiscing cursus eu, suscipit id nulla.</p>
 								<div class="single-add-to-cart">
 									<form action="#" class="cart-quantity d-flex">
 										<div class="quantity">
 											<div class="cart-plus-minus">
-												<input type="number" class="input-text" name="quantity" value="1" title="Qty">
+												<input type="number" class="input-text" id="orderCount" value="1" title="购买数量">
 											</div>
 										</div>
-										<button class="add-to-cart" type="submit">Add To Cart</button>
+										<input class="add-to-cart" type="button" value="加入购物车" onclick="javascript:addCart(${product.rowId});">
 									</form>
 								</div>
 								<ul class="single-add-actions">
-									<li class="add-to-wishlist"><a href="wishlist.html" class="add_to_wishlist"><i class="icon-heart"></i>Add to Wishlist</a></li>
+									<!-- 从session中取出当前用户收藏的商品CODE集合 -->
+									<c:set var="wishProList" value="${sessionScope.userWishProList}"/>
+									<li class="add-to-wishlist">
+									<!-- 判断如果当前的商品CODE在这个集合中，则判断此商品已经完成收藏。 -->
+									<a href="javascript:;" data-action="wish-action" data-prod="${product.proCode}" class="add_to_wishlist"><i class="${wishProList.contains(product.proCode)?'fa fa-heart text-danger':'fa fa-heart-o'}"></i>收藏</a></li>
 									<li class="add-to-compare">
 										<div class="compare-button">
 											<a href="compare.html"><i class="icon-refresh"></i>Compare</a>
@@ -151,7 +155,7 @@
 						<div class="col-lg-12">
 							<div class="product-details-tab">
 								<ul role="tablist" class="nav">
-									<li class="active" role="presentation"><a data-toggle="tab" role="tab" href="#description" class="active">Description</a></li>
+									<li class="active" role="presentation"><a data-toggle="tab" role="tab" href="#description" class="active">商品详情</a></li>
 									<li role="presentation"><a data-toggle="tab" role="tab" href="#reviews">Reviews</a></li>
 								</ul>
 							</div>
@@ -162,8 +166,8 @@
 								<div class="product_tab_content tab-pane active" id="description" role="tabpanel">
 									<div class="product_description_wrap  mt-30">
 										<div class="product_desc mb-30">
-											<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam fringilla augue nec est tristique auctor. Donec non est at libero vulputate rutrum. Morbi ornare lectus quis justo gravida semper. Nulla tellus mi, vulputate adipiscing cursus eu, suscipit id nulla.</p>
-											<p>Pellentesque aliquet, sem eget laoreet ultrices, ipsum metus feugiat sem, quis fermentum turpis eros eget velit. Donec ac tempus ante. Fusce ultricies massa massa. Fusce aliquam, purus eget sagittis vulputate, sapien libero hendrerit est, sed commodo augue nisi non neque. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tempor, lorem et placerat vestibulum, metus nisi posuere nisl, in accumsan elit odio quis mi. Cras neque metus, consequat et blandit et, luctus a nunc. Etiam gravida vehicula tellus, in imperdiet ligula euismod eget.</p>
+											<%-- c:out 输出商品的详细信息，escapeXml 默认值为true(不解析带格式的数据) --%>
+											<c:out value="${product.proInfo}" escapeXml="false"/>
 										</div>
 									</div>
 								</div>
@@ -241,284 +245,6 @@
 						</div>
 					</div>
 				</div>
-				<div class="related-product-area section-pt">
-					<div class="row">
-						<div class="col-lg-12">
-							<div class="section-title">
-								<h3>Related Product</h3>
-							</div>
-						</div>
-					</div>
-					<div class="row product-active-lg-4">
-						<div class="col-lg-12">
-							<!-- single-product-area start -->
-							<div class="single-product-area mt-30">
-								<div class="product-thumb">
-									<a href="product-details/1"><img class="primary-image" src="assets/images/product/product-02.png" alt=""></a>
-									<div class="label-product label_new">New</div>
-									<div class="action-links">
-										<a href="cart.html" class="cart-btn" title="Add to Cart"><i class="icon-basket-loaded"></i></a><a href="wishlist.html" class="wishlist-btn" title="Add to Wish List"><i class="icon-heart"></i></a><a href="#" class="quick-view" title="Quick View" data-toggle="modal" data-target="#exampleModalCenter"><i class="icon-magnifier icons"></i></a>
-									</div>
-									<ul class="watch-color">
-										<li class="twilight"><span></span></li>
-										<li class="pigeon"><span></span></li>
-										<li class="portage"><span></span></li>
-									</ul>
-								</div>
-								<div class="product-caption">
-									<h4 class="product-name">
-										<a href="product-details/1">Simple Product 002</a>
-									</h4>
-									<div class="price-box">
-										<span class="new-price">$49.00</span><span class="old-price">$90.00</span>
-									</div>
-								</div>
-							</div>
-							<!-- single-product-area end -->
-						</div>
-						<div class="col-lg-12">
-							<!-- single-product-area start -->
-							<div class="single-product-area mt-30">
-								<div class="product-thumb">
-									<a href="product-details/1"><img class="primary-image" src="assets/images/product/product-03.png" alt=""></a>
-									<div class="action-links">
-										<a href="cart.html" class="cart-btn" title="Add to Cart"><i class="icon-basket-loaded"></i></a><a href="wishlist.html" class="wishlist-btn" title="Add to Wish List"><i class="icon-heart"></i></a><a href="#" class="quick-view" title="Quick View" data-toggle="modal" data-target="#exampleModalCenter"><i class="icon-magnifier icons"></i></a>
-									</div>
-									<ul class="watch-color">
-										<li class="twilight"><span></span></li>
-										<li class="pigeon"><span></span></li>
-									</ul>
-								</div>
-								<div class="product-caption">
-									<h4 class="product-name">
-										<a href="product-details/1">Simple Product 003</a>
-									</h4>
-									<div class="price-box">
-										<span class="new-price">$55.00</span><span class="old-price">$76.00</span>
-									</div>
-								</div>
-							</div>
-							<!-- single-product-area end -->
-						</div>
-						<div class="col-lg-12">
-							<!-- single-product-area start -->
-							<div class="single-product-area mt-30">
-								<div class="product-thumb">
-									<a href="product-details/1"><img class="primary-image" src="assets/images/product/product-04.png" alt=""></a>
-									<div class="label-product label_new">New</div>
-									<div class="action-links">
-										<a href="cart.html" class="cart-btn" title="Add to Cart"><i class="icon-basket-loaded"></i></a><a href="wishlist.html" class="wishlist-btn" title="Add to Wish List"><i class="icon-heart"></i></a><a href="#" class="quick-view" title="Quick View" data-toggle="modal" data-target="#exampleModalCenter"><i class="icon-magnifier icons"></i></a>
-									</div>
-									<ul class="watch-color">
-										<li class="twilight"><span></span></li>
-										<li class="portage"><span></span></li>
-										<li class="pigeon"><span></span></li>
-									</ul>
-								</div>
-								<div class="product-caption">
-									<h4 class="product-name">
-										<a href="product-details/1">Simple Product 004</a>
-									</h4>
-									<div class="price-box">
-										<span class="new-price">$64.00</span><span class="old-price">$72.00</span>
-									</div>
-								</div>
-							</div>
-							<!-- single-product-area end -->
-						</div>
-						<div class="col-lg-12">
-							<!-- single-product-area start -->
-							<div class="single-product-area mt-30">
-								<div class="product-thumb">
-									<a href="product-details/1"><img class="primary-image" src="assets/images/product/product-05.png" alt=""></a>
-									<div class="label-product label_new">New</div>
-									<div class="action-links">
-										<a href="cart.html" class="cart-btn" title="Add to Cart"><i class="icon-basket-loaded"></i></a><a href="wishlist.html" class="wishlist-btn" title="Add to Wish List"><i class="icon-heart"></i></a><a href="#" class="quick-view" title="Quick View" data-toggle="modal" data-target="#exampleModalCenter"><i class="icon-magnifier icons"></i></a>
-									</div>
-									<ul class="watch-color">
-										<li class="twilight"><span></span></li>
-										<li class="portage"><span></span></li>
-										<li class="pigeon"><span></span></li>
-									</ul>
-								</div>
-								<div class="product-caption">
-									<h4 class="product-name">
-										<a href="product-details/1">Simple Product 005</a>
-									</h4>
-									<div class="price-box">
-										<span class="new-price">$44.00</span><span class="old-price">$49.00</span>
-									</div>
-								</div>
-							</div>
-							<!-- single-product-area end -->
-						</div>
-						<div class="col-lg-12">
-							<!-- single-product-area start -->
-							<div class="single-product-area mt-30">
-								<div class="product-thumb">
-									<a href="product-details/1"><img class="primary-image" src="assets/images/product/product-01.png" alt=""></a>
-									<div class="label-product label_new">New</div>
-									<div class="action-links">
-										<a href="cart.html" class="cart-btn" title="Add to Cart"><i class="icon-basket-loaded"></i></a><a href="wishlist.html" class="wishlist-btn" title="Add to Wish List"><i class="icon-heart"></i></a><a href="#" class="quick-view" title="Quick View" data-toggle="modal" data-target="#exampleModalCenter"><i class="icon-magnifier icons"></i></a>
-									</div>
-									<ul class="watch-color">
-										<li class="twilight"><span></span></li>
-										<li class="portage"><span></span></li>
-										<li class="pigeon"><span></span></li>
-									</ul>
-								</div>
-								<div class="product-caption">
-									<h4 class="product-name">
-										<a href="product-details/1">Simple Product 001</a>
-									</h4>
-									<div class="price-box">
-										<span class="new-price">$42.00</span><span class="old-price">$49.00</span>
-									</div>
-								</div>
-							</div>
-							<!-- single-product-area end -->
-						</div>
-					</div>
-				</div>
-				<div class="related-product-area section-pt">
-					<div class="row">
-						<div class="col-lg-12">
-							<div class="section-title">
-								<h3>Upsell Products</h3>
-							</div>
-						</div>
-					</div>
-					<div class="row product-active-lg-4">
-						<div class="col-lg-12">
-							<!-- single-product-area start -->
-							<div class="single-product-area mt-30">
-								<div class="product-thumb">
-									<a href="product-details/1"><img class="primary-image" src="assets/images/product/product-12.png" alt=""></a>
-									<div class="label-product label_new">New</div>
-									<div class="action-links">
-										<a href="cart.html" class="cart-btn" title="Add to Cart"><i class="icon-basket-loaded"></i></a><a href="wishlist.html" class="wishlist-btn" title="Add to Wish List"><i class="icon-heart"></i></a><a href="#" class="quick-view" title="Quick View" data-toggle="modal" data-target="#exampleModalCenter"><i class="icon-magnifier icons"></i></a>
-									</div>
-									<ul class="watch-color">
-										<li class="twilight"><span></span></li>
-										<li class="pigeon"><span></span></li>
-										<li class="portage"><span></span></li>
-									</ul>
-								</div>
-								<div class="product-caption">
-									<h4 class="product-name">
-										<a href="product-details/1">Simple Product 002</a>
-									</h4>
-									<div class="price-box">
-										<span class="new-price">$49.00</span><span class="old-price">$90.00</span>
-									</div>
-								</div>
-							</div>
-							<!-- single-product-area end -->
-						</div>
-						<div class="col-lg-12">
-							<!-- single-product-area start -->
-							<div class="single-product-area mt-30">
-								<div class="product-thumb">
-									<a href="product-details/1"><img class="primary-image" src="assets/images/product/product-13.png" alt=""></a>
-									<div class="action-links">
-										<a href="cart.html" class="cart-btn" title="Add to Cart"><i class="icon-basket-loaded"></i></a><a href="wishlist.html" class="wishlist-btn" title="Add to Wish List"><i class="icon-heart"></i></a><a href="#" class="quick-view" title="Quick View" data-toggle="modal" data-target="#exampleModalCenter"><i class="icon-magnifier icons"></i></a>
-									</div>
-									<ul class="watch-color">
-										<li class="twilight"><span></span></li>
-										<li class="pigeon"><span></span></li>
-									</ul>
-								</div>
-								<div class="product-caption">
-									<h4 class="product-name">
-										<a href="product-details/1">Simple Product 003</a>
-									</h4>
-									<div class="price-box">
-										<span class="new-price">$55.00</span><span class="old-price">$76.00</span>
-									</div>
-								</div>
-							</div>
-							<!-- single-product-area end -->
-						</div>
-						<div class="col-lg-12">
-							<!-- single-product-area start -->
-							<div class="single-product-area mt-30">
-								<div class="product-thumb">
-									<a href="product-details/1"><img class="primary-image" src="assets/images/product/product-14.png" alt=""></a>
-									<div class="label-product label_new">New</div>
-									<div class="action-links">
-										<a href="cart.html" class="cart-btn" title="Add to Cart"><i class="icon-basket-loaded"></i></a><a href="wishlist.html" class="wishlist-btn" title="Add to Wish List"><i class="icon-heart"></i></a><a href="#" class="quick-view" title="Quick View" data-toggle="modal" data-target="#exampleModalCenter"><i class="icon-magnifier icons"></i></a>
-									</div>
-									<ul class="watch-color">
-										<li class="twilight"><span></span></li>
-										<li class="portage"><span></span></li>
-										<li class="pigeon"><span></span></li>
-									</ul>
-								</div>
-								<div class="product-caption">
-									<h4 class="product-name">
-										<a href="product-details/1">Simple Product 004</a>
-									</h4>
-									<div class="price-box">
-										<span class="new-price">$64.00</span><span class="old-price">$72.00</span>
-									</div>
-								</div>
-							</div>
-							<!-- single-product-area end -->
-						</div>
-						<div class="col-lg-12">
-							<!-- single-product-area start -->
-							<div class="single-product-area mt-30">
-								<div class="product-thumb">
-									<a href="product-details/1"><img class="primary-image" src="assets/images/product/product-15.png" alt=""></a>
-									<div class="label-product label_new">New</div>
-									<div class="action-links">
-										<a href="cart.html" class="cart-btn" title="Add to Cart"><i class="icon-basket-loaded"></i></a><a href="wishlist.html" class="wishlist-btn" title="Add to Wish List"><i class="icon-heart"></i></a><a href="#" class="quick-view" title="Quick View" data-toggle="modal" data-target="#exampleModalCenter"><i class="icon-magnifier icons"></i></a>
-									</div>
-									<ul class="watch-color">
-										<li class="twilight"><span></span></li>
-										<li class="portage"><span></span></li>
-										<li class="pigeon"><span></span></li>
-									</ul>
-								</div>
-								<div class="product-caption">
-									<h4 class="product-name">
-										<a href="product-details/1">Simple Product 005</a>
-									</h4>
-									<div class="price-box">
-										<span class="new-price">$44.00</span><span class="old-price">$49.00</span>
-									</div>
-								</div>
-							</div>
-							<!-- single-product-area end -->
-						</div>
-						<div class="col-lg-12">
-							<!-- single-product-area start -->
-							<div class="single-product-area mt-30">
-								<div class="product-thumb">
-									<a href="product-details/1"><img class="primary-image" src="assets/images/product/product-01.png" alt=""></a>
-									<div class="label-product label_new">New</div>
-									<div class="action-links">
-										<a href="cart.html" class="cart-btn" title="Add to Cart"><i class="icon-basket-loaded"></i></a><a href="wishlist.html" class="wishlist-btn" title="Add to Wish List"><i class="icon-heart"></i></a><a href="#" class="quick-view" title="Quick View" data-toggle="modal" data-target="#exampleModalCenter"><i class="icon-magnifier icons"></i></a>
-									</div>
-									<ul class="watch-color">
-										<li class="twilight"><span></span></li>
-										<li class="portage"><span></span></li>
-										<li class="pigeon"><span></span></li>
-									</ul>
-								</div>
-								<div class="product-caption">
-									<h4 class="product-name">
-										<a href="product-details/1">Simple Product 001</a>
-									</h4>
-									<div class="price-box">
-										<span class="new-price">$42.00</span><span class="old-price">$49.00</span>
-									</div>
-								</div>
-							</div>
-							<!-- single-product-area end -->
-						</div>
-					</div>
-				</div>
 			</div>
 		</div>
 		<!-- main-content-wrap end -->
@@ -546,7 +272,10 @@
 	<!--<script src="assets/js/vendor/vendor.min.js"></script><script src="assets/js/plugins/plugins.min.js"></script>-->
 	<!-- Main JS -->
 	<script src="assets/js/main.js"></script>
+	<!-- 自己定义的 jQuery的ajax方法的重写 -->
+	<script src="assets/js/shop/rezi-ajax.js"></script>
 	<!-- 引入自书写的全局使用的头部脚本 -->
 	<script src="assets/js/shop/head.js"></script>
+	<script src="assets/js/shop/shop_wish_cart.js"></script>
 </body>
 </html>

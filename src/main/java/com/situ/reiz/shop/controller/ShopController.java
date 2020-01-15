@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.situ.reiz.address.domain.Address;
 import com.situ.reiz.address.service.AddressService;
 import com.situ.reiz.area.domain.Area;
 import com.situ.reiz.area.service.AreaService;
@@ -156,8 +157,16 @@ public class ShopController implements Serializable {
 		return modelAndView;
 	}
 
+	/**
+	 * @Title: goProductInfo 
+	 * @Description:(进商品详细页面)
+	 * @param rowId
+	 * @param modelAndView
+	 * @return
+	 */
 	@RequestMapping("/product-details/{rowId}")
 	public ModelAndView goProductInfo(@PathVariable Long rowId, ModelAndView modelAndView) {
+		modelAndView.addObject("product", shopService.findProductById(rowId));
 		modelAndView.setViewName(PAGE_SHOP_PRODUCT_INFO);
 		return modelAndView;
 	}
@@ -227,10 +236,10 @@ public class ShopController implements Serializable {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/addwish/{proCode}")
-	public Integer doAddWish(@PathVariable String proCode) {
+	@RequestMapping("/addwish/{active}/{proCode}")
+	public Integer doAddWish(@PathVariable Integer active, @PathVariable String proCode, HttpSession session) {
 		String userCode = ContextUtils.getUserCode(ConfigUtils.SESSION_USER_LOGIN);
-		return this.shopService.doAddWish(userCode, proCode);
+		return this.shopService.doAddWish(userCode, proCode, active, session);
 	}
 
 	/**
@@ -241,8 +250,8 @@ public class ShopController implements Serializable {
 	 */
 	@ResponseBody
 	@RequestMapping("/removewish/{rowId}")
-	public Integer removeWish(@PathVariable Long rowId) {
-		return this.shopService.removeWish(rowId);
+	public Integer removeWish(@PathVariable Long rowId, HttpSession session) {
+		return this.shopService.removeWish(rowId, session);
 	}
 
 	/**
@@ -252,10 +261,10 @@ public class ShopController implements Serializable {
 	 * @return 购物车的数量
 	 */
 	@ResponseBody
-	@RequestMapping("/addcart/{proId}")
-	public Integer doAddCart(@PathVariable Long proId, HttpSession session) {
+	@RequestMapping("/addcart/{proId}/{orderCount}")
+	public Integer doAddCart(@PathVariable Long proId,@PathVariable Integer orderCount, HttpSession session) {
 		String userCode = ContextUtils.getUserCode(ConfigUtils.SESSION_USER_LOGIN);
-		return this.shopService.doAddCart(userCode, proId, session);
+		return this.shopService.doAddCart(userCode, proId,orderCount, session);
 	}
 
 	/**
@@ -280,6 +289,20 @@ public class ShopController implements Serializable {
 	public ModelAndView findHeadCartData(ModelAndView modelAndView) {
 		modelAndView.setViewName(PAGE_SHOP_HEAD_CART);
 		return modelAndView;
+	}
+
+	/**
+	 * @Title: updateCartCount 
+	 * @Description:(更新购物车信息)
+	 * @param rowId
+	 * @param orderCount
+	 * @param session
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/putcart/{rowId}/{count}")
+	public Integer updateCartCount(@PathVariable("rowId") Long rowId, @PathVariable("count") Integer orderCount, HttpSession session) {
+		return shopService.updateCartCount(rowId, orderCount, session);
 	}
 
 	/**
@@ -333,6 +356,10 @@ public class ShopController implements Serializable {
 	@ResponseBody
 	@RequestMapping("/orderdetail/{orderId}")
 	public ModelAndView findOrderDetailList(@PathVariable Long orderId, ModelAndView modelAndView) {
+		Order order = shopService.findOrderById(orderId);
+		Address address = shopService.findAddressById(order.getAddressId());
+		modelAndView.addObject("order", order);
+		modelAndView.addObject("address", address);
 		modelAndView.addObject("orderDetailList", shopService.findOrderDetailList(orderId));
 		modelAndView.setViewName(PAGE_SHOP_ORDER_DETAIL);
 		return modelAndView;

@@ -65,4 +65,9 @@ public class MenuServiceImpl implements MenuService {
 		return this.menuDao.findByParent(parentId);
 	}
 
+	@Override
+	public Menu getMenuById(Long rowId) {
+		return menuDao.get(rowId);
+	}
+
 }

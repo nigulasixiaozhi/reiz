@@ -16,8 +16,8 @@ public class ConfigUtils implements Serializable {
 	public static final String SESSION_USER_LOGIN = "userLogin";
 	// 管理员登录-session object 名称
 	public static final String SESSION_ADMIN_LOGIN = "adminLogin";
-	// 用户的收藏个数
-	public static final String SESSION_COUNT_WISH = "userWishCount";
+	// 用户的收藏 商品CODE集合
+	public static final String SESSION_USER_WISH_PRO_LIST = "userWishProList";
 
 	// 用户登录- cookie name
 	public static final String COOKIE_USER_NAME = "user.reiz.com";

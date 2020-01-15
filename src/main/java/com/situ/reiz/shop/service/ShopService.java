@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.situ.reiz.address.domain.Address;
 import com.situ.reiz.base.FieldParam;
 import com.situ.reiz.cart.domain.Cart;
 import com.situ.reiz.menu.domain.Menu;
@@ -71,7 +72,7 @@ public interface ShopService {
 	 * @param proCode
 	 * @return
 	 */
-	Integer doAddWish(String userCode, String proCode);
+	Integer doAddWish(String userCode, String proCode, Integer active, HttpSession session);
 
 	/**
 	 * @Title: findWishList 
@@ -87,7 +88,7 @@ public interface ShopService {
 	 * @param rowId
 	 * @return
 	 */
-	Integer removeWish(Long rowId);
+	Integer removeWish(Long rowId, HttpSession session);
 
 	/**
 	 * @Title: doAddCart 
@@ -96,7 +97,7 @@ public interface ShopService {
 	 * @param proId
 	 * @return
 	 */
-	Integer doAddCart(String userCode, Long proId, HttpSession session);
+	Integer doAddCart(String userCode, Long proId, Integer orderCount, HttpSession session);
 
 	/**
 	 * @Title: findAllCartData 
@@ -113,6 +114,15 @@ public interface ShopService {
 	 * @return
 	 */
 	Integer removeCart(Long rowId, HttpSession session);
+
+	/**
+	 * @Title: updateCartCount 
+	 * @Description:(更新购物车的数量)
+	 * @param rowId
+	 * @param orderCount
+	 * @return
+	 */
+	Integer updateCartCount(Long rowId, Integer orderCount, HttpSession session);
 
 	/**
 	 * @Title: doAddOrder 
@@ -141,6 +151,22 @@ public interface ShopService {
 	List<OrderDetail> findOrderDetailList(Long orderId);
 
 	/**
+	 * @Title: findOrderById 
+	 * @Description:(根据 order主键查询订单的信息)
+	 * @param orderId
+	 * @return
+	 */
+	Order findOrderById(Long orderId);
+
+	/**
+	 * @Title: findAddressById 
+	 * @Description:(根据主键查询收货地址)
+	 * @param addressId
+	 * @return
+	 */
+	Address findAddressById(Long addressId);
+
+	/**
 	 * @Title: checkUserPass 
 	 * @Description:(检查用户原密码是否正确)
 	 * @param fieldParam
@@ -156,4 +182,12 @@ public interface ShopService {
 	 * @return
 	 */
 	Integer doUpdateUserPass(String userCode, String userPass);
+
+	/**
+	 * @Title: findProductById 
+	 * @Description:(根据主键查询商品信息)
+	 * @param rowId
+	 * @return
+	 */
+	Product findProductById(Long rowId);
 }

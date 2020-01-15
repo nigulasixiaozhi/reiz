@@ -84,11 +84,11 @@
 					<div class="right-blok-box text-white d-flex">
 						<div class="user-wrap">
 							<!-- 从session中取出用户的收藏个数 -->
-							<a href="wishlist"><span class="cart-total"><c:out value="${sessionScope.userWishCount}" default="0" /></span><i class="icon-heart"></i></a>
+							<a href="wishlist"><span class="cart-total" id="head_wish_total"><c:out value="${sessionScope.userWishProList.size()}" default="0" /></span><i class="icon-heart"></i></a>
 						</div>
 						<div class="shopping-cart-wrap">
 							<!-- 从session中取出用户的购物车数量 -->
-							<a href="cart"><i class="icon-basket-loaded"></i><span class="cart-total" id="cart_total"><c:out value="${sessionScope.userCart.size()}" default="0" /></span></a>
+							<a href="cart"><i class="icon-basket-loaded"></i><span class="cart-total" id="head_cart_total"><c:out value="${sessionScope.userCart.size()}" default="0" /></span></a>
 							<!-- 头部购物车详细数据-开始 -->
 							<ul class="mini-cart" id="mini_cart">
 								

@@ -25,4 +25,6 @@ public interface WishDao extends BaseDao<Wish> {
 	List<Wish> findAllWish(String userCode);
 
 	Integer getCount(String userCode);
+	
+	List<String>findProList(String userCode);
 }

@@ -76,7 +76,7 @@
 											<td class="plantmore-product-name"><a href="#">${wish.proName}</a></td>
 											<td class="plantmore-product-price"><span class="amount">￥${wish.newPrice}</span></td>
 											<td class="plantmore-product-stock-status"><span class="in-stock">${wish.isLine==1?'上架':'下架'}</span></td>
-											<td class="plantmore-product-add-cart"><a href="#">加入购物车</a></td>
+											<td class="plantmore-product-add-cart"><a href="javascript:addCart(${wish.proId});">加入购物车</a></td>
 											<td class="plantmore-product-remove"><a href="javascript:removeWish(${wish.rowId});"><i class="fa fa-times"></i></a></td>
 										</tr>
 									</c:forEach>
@@ -114,8 +114,11 @@
 	<!--<script src="assets/js/vendor/vendor.min.js"></script><script src="assets/js/plugins/plugins.min.js"></script>-->
 	<!-- Main JS -->
 	<script src="assets/js/main.js"></script>
+	<!-- 自己定义的 jQuery的ajax方法的重写 -->
+	<script src="assets/js/shop/rezi-ajax.js"></script>
 	<!-- 引入自书写的全局使用的头部脚本 -->
 	<script src="assets/js/shop/head.js"></script>
-	<script type="text/javascript" src="assets/js/shop/wishlist.js"></script>
+	<script src="assets/js/shop/wishlist.js"></script>
+	<script src="assets/js/shop/shop_wish_cart.js"></script>
 </body>
 </html>

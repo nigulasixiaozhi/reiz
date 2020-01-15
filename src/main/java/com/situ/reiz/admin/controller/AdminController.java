@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.situ.reiz.admin.service.AdminService;
 import com.situ.reiz.util.ConfigUtils;
+
 /**
  * 
  * @ClassName:AdminController 
@@ -24,6 +25,7 @@ public class AdminController implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private static final String PAGE_ADMIN_INDEX = "admin/index";// 管理员后台首页
 	private static final String APGE_ADMIN_LOGIN = "admin/login";// 管理员后台的登录页面
+	private static final String PAGE_ADMIN_VIEW = "admin/view";
 	@Autowired
 	private AdminService adminService;
 
@@ -47,13 +49,19 @@ public class AdminController implements Serializable {
 
 	@ResponseBody
 	@RequestMapping("/doAdminLogin")
-	public Integer doAdminLogin(String userCode, String userPass, Integer isRemember, HttpServletRequest request,
-			HttpServletResponse response) {
+	public Integer doAdminLogin(String userCode, String userPass, Integer isRemember, HttpServletRequest request, HttpServletResponse response) {
 		return adminService.doAdminLogin(userCode, userPass, isRemember, request, response);
 	}
+
 	@ResponseBody
 	@RequestMapping("/doAdminLoginOut")
 	public Integer doAdminLoginOut(HttpSession session) {
 		return adminService.doAdminLoginOut(session);
+	}
+
+	@RequestMapping("/view")
+	public ModelAndView goViewPage(ModelAndView modelAndView) {
+		modelAndView.setViewName(PAGE_ADMIN_VIEW);
+		return modelAndView;
 	}
 }

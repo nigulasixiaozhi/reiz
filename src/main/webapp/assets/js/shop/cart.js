@@ -10,6 +10,10 @@ $(document).ready(function(){
 		$tr.find('.sub-totalPrice').html(newPrice*orderCount);
 		//重新计算购物车的总价
 		resetTotalPrice();
+		//更新购物车的数量
+		$.ajax({
+			url:'putcart/'+rowId+'/'+orderCount
+		});
 	});
 	//绑定全部选中
 	$('#check_cart_all').on('change',function(){
@@ -40,7 +44,7 @@ function removeCart(rowId){
 			// 将头部页面上面的购物车的列表数据移除。
 			$('#tr_cart_' + rowId).remove();
 			// 更新购物车的数量
-			$('#cart_total').html(result);
+			$('#head_cart_total').html(result);
 			alert('购物车移除成功');
 		}
 	});

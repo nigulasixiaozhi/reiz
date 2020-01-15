@@ -18,7 +18,11 @@ import com.situ.reiz.product.param.ProductParam;
 public interface ProductService {
 	Long saveProduct(ProductParam productParam, String realPath, String createBy);
 
+	Long updateProduct(ProductParam productParam, String realPath, String createBy);
+
 	List<Product> findAllProduct();
 
 	Integer changeLine(Long rowId, Integer isLine);
+
+	Product getProductById(Long rowId);
 }

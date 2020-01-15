@@ -24,7 +24,7 @@ function removeHeadCart(rowId) {
 			//尝试将购物车页面中的数据移除（如果有）
 			$('#tr_cart_'+rowId).remove();
 			// 更新购物车的数量
-			$('#cart_total').html(result);
+			$('#head_cart_total').html(result);
 			alert('购物车移除成功');
 		}
 	});

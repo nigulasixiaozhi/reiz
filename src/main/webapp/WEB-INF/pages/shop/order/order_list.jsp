@@ -11,7 +11,9 @@
 				<c:if test="${order.orderStatus==2}">待发货</c:if>
 			</td>
 			<td>￥ ${order.sumPrice}</td>
-			<td><a href="javascript:showOrderDetail(${order.rowId});" class="view">详情</a></td>
+			<td><a href="javascript:showOrderDetail(${order.rowId});" class="view">详情</a>
+				<c:if test="${order.orderStatus==1}"><a href="" class="view">付款</a></c:if>
+			</td>
 		</tr>
 	</c:forEach>
 </c:if>

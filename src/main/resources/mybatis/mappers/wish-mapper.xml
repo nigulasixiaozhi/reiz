@@ -14,7 +14,7 @@
 	<sql id="wish_view_select">
 		SELECT ROW_ID,
 		<include refid="wish_base_column" />
-		, PRO_CODE,PRO_NAME,PRO_PATH,OLD_PRICE,NEW_PRICE,PRO_COUNT,IS_NEW,IS_LINE
+		,PRO_ID, PRO_CODE,PRO_NAME,PRO_PATH,OLD_PRICE,NEW_PRICE,PRO_COUNT,IS_NEW,IS_LINE
 		FROM V_WISH WHERE ACTIVE_FLAG = 1
 	</sql>
 	<insert id="save" parameterType="Wish" useGeneratedKeys="true" keyProperty="rowId" keyColumn="ROW_ID">
@@ -56,8 +56,10 @@
 		AND ROW_ID = #{rowId}
 	</select>
 	<select id="findByUserAndPro" resultType="Wish">
-		<include refid="wish_base_select" />
-		AND USER_CODE = #{userCode}
+		SELECT ROW_ID,
+		<include refid="wish_base_column" />
+		, UPDATE_BY,UPDATE_DATE FROM TB_WISH
+		WHERE USER_CODE = #{userCode}
 		AND PRO_CODE = #{proCode}
 	</select>
 	<select id="findAllWish" resultType="Wish">
@@ -66,6 +68,11 @@
 	</select>
 	<select id="getCount" resultType="java.lang.Integer">
 		SELECT COUNT(ROW_ID) FROM TB_WISH
+		WHERE ACTIVE_FLAG = 1
+		AND USER_CODE = #{userCode}
+	</select>
+	<select id="findProList" resultType="java.lang.String">
+		SELECT PRO_CODE FROM TB_WISH
 		WHERE ACTIVE_FLAG = 1
 		AND USER_CODE = #{userCode}
 	</select>

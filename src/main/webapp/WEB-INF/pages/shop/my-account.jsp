@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<%@include file="/check_user_login.jsp"%>
 <html class="no-js" lang="en">
 <head>
 <meta charset="utf-8">
@@ -224,23 +223,8 @@
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<div class="modal-body">
-					<div class="table-content table-responsive">
-						<table class="table">
-							<thead>
-								<tr>
-									<th class="plantmore-product-thumbnail">商品图片</th>
-									<th class="cart-product-name">商品名称</th>
-									<th class="plantmore-product-price">商品售价</th>
-									<th class="plantmore-product-quantity">购买数量</th>
-									<th class="plantmore-product-subtotal">总价</th>
-								</tr>
-							</thead>
-							<tbody id="tbody_order_detail_table">
-								
-							</tbody>
-						</table>
-					</div>
+				<div class="modal-body" id="order_detail_body">
+					
 				</div>
 			</div>
 		</div>
@@ -270,8 +254,10 @@
 	<!--<script src="assets/js/vendor/vendor.min.js"></script><script src="assets/js/plugins/plugins.min.js"></script>-->
 	<!-- Main JS -->
 	<script src="assets/js/main.js"></script>
+	<!-- 自己定义的 jQuery的ajax方法的重写 -->
+	<script src="assets/js/shop/rezi-ajax.js"></script>
 	<!-- 引入自书写的全局使用的头部脚本 -->
 	<script src="assets/js/shop/head.js"></script>
-	<script type="text/javascript" src="assets/js/shop/my_account.js"></script>
+	<script src="assets/js/shop/my_account.js"></script>
 </body>
 </html>

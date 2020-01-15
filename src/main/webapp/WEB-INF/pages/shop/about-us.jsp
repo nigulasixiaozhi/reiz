@@ -214,6 +214,8 @@
 	<!--<script src="assets/js/vendor/vendor.min.js"></script><script src="assets/js/plugins/plugins.min.js"></script>-->
 	<!-- Main JS -->
 	<script src="assets/js/main.js"></script>
+	<!-- 自己定义的 jQuery的ajax方法的重写 -->
+	<script src="assets/js/shop/rezi-ajax.js"></script>
 	<!-- 引入自书写的全局使用的头部脚本 -->
 	<script src="assets/js/shop/head.js"></script>
 </body>

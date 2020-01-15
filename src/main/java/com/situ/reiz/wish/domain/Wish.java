@@ -22,6 +22,7 @@ public class Wish extends BaseClass implements Serializable {
 	private String userCode;//用户CODE
 	private String proCode;//商品编号
 	/*额外的属性-开始*/
+	private Long proId;//商品主键
 	private String proName;//商品名称
 	private String proPath;//商品主图
 	private Float oldPrice;//商品原价
@@ -30,6 +31,14 @@ public class Wish extends BaseClass implements Serializable {
 	private Integer proCount;//库存数量
 	private Integer isLine;//是否在架#1:是;0:否;
 	
+	public Long getProId() {
+		return proId;
+	}
+
+	public void setProId(Long proId) {
+		this.proId = proId;
+	}
+
 	public String getProName() {
 		return proName;
 	}

@@ -20,7 +20,7 @@
 				<td><span class="text-line" title="原价">￥ ${product.oldPrice}</span> <span class="font-weight-bold" title="售价">￥${product.newPrice}</span></td>
 				<%-- <td>${product.proInfo}</td> --%>
 				<td><a class="btn btn-info btn-xs" href="">删除</a> 
-				<a class="btn btn-info btn-xs" href="">修改</a>
+				<a class="btn btn-info btn-xs" href="javascript:goputpro(${product.rowId});">修改</a>
 				<a class="btn ${product.isLine==1?'btn-danger':'btn-success'} btn-xs" href="javascript:doChangeLine(${product.rowId},${product.isLine});">${product.isLine==1?'下架':'上架'}</a>
 				 </td>
 			</tr>

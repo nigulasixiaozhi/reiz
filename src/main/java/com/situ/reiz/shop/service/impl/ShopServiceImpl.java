@@ -14,6 +14,8 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.situ.reiz.address.dao.AddressDao;
+import com.situ.reiz.address.domain.Address;
 import com.situ.reiz.base.FieldParam;
 import com.situ.reiz.cart.dao.CartDao;
 import com.situ.reiz.cart.domain.Cart;
@@ -48,6 +50,8 @@ public class ShopServiceImpl implements ShopService {
 	private WishDao wishDao;
 	@Autowired
 	private CartDao cartDao;
+	@Autowired
+	private AddressDao addressDao;
 	@Autowired
 	private OrderDao orderDao;
 	@Autowired
@@ -135,9 +139,9 @@ public class ShopServiceImpl implements ShopService {
 					}
 				}
 				session.setAttribute(ConfigUtils.SESSION_USER_CART, cartMap);
-				//查询出 收藏的 数量
-				Integer wishCount = this.wishDao.getCount(userCode);
-				session.setAttribute(ConfigUtils.SESSION_COUNT_WISH, wishCount);
+				//查询出 收藏的 商品CODE集合
+				List<String> wishProList = this.wishDao.findProList(userCode);
+				session.setAttribute(ConfigUtils.SESSION_USER_WISH_PRO_LIST, wishProList);
 			} else if (isLock == 1) {// 用户被锁定
 				result = 3;
 			}
@@ -204,8 +208,19 @@ public class ShopServiceImpl implements ShopService {
 		return 1;
 	}
 
+	/**
+	 * @Title: doAddWish 
+	 * @Description:(加入收藏)
+	 * @param userCode
+	 * @param proCode
+	 * @param active
+	 * @param session
+	 * @return
+	 */
 	@Override
-	public Integer doAddWish(String userCode, String proCode) {
+	public Integer doAddWish(String userCode, String proCode, Integer active, HttpSession session) {
+		@SuppressWarnings("unchecked")
+		List<String> wishProList = (List<String>) session.getAttribute(ConfigUtils.SESSION_USER_WISH_PRO_LIST);
 		Wish wish = this.wishDao.findByUserAndPro(userCode, proCode);
 		if (wish == null) {
 			wish = new Wish();
@@ -215,8 +230,17 @@ public class ShopServiceImpl implements ShopService {
 			wish.setCreateDate(new Date());
 			wish.setActiveFlag(1);
 			this.wishDao.save(wish);
+		} else {
+			wish.setActiveFlag(active);
+			this.wishDao.update(wish);
 		}
-		return 1;
+		if (wishProList.contains(proCode)) {
+			wishProList.remove(proCode);
+		} else {
+			wishProList.add(proCode);
+		}
+		session.setAttribute(ConfigUtils.SESSION_USER_WISH_PRO_LIST, wishProList);
+		return wishProList.size();
 	}
 
 	/** 
@@ -237,9 +261,14 @@ public class ShopServiceImpl implements ShopService {
 	 * @return
 	 */
 	@Override
-	public Integer removeWish(Long rowId) {
+	public Integer removeWish(Long rowId, HttpSession session) {
+		@SuppressWarnings("unchecked")
+		List<String> wishProList = (List<String>) session.getAttribute(ConfigUtils.SESSION_USER_WISH_PRO_LIST);
+		Wish wish = this.wishDao.get(rowId);
 		this.wishDao.delete(rowId);
-		return 1;
+		wishProList.remove(wish.getProCode());
+		session.setAttribute(ConfigUtils.SESSION_USER_WISH_PRO_LIST, wishProList);
+		return wishProList.size();
 	}
 
 	/**
@@ -250,7 +279,7 @@ public class ShopServiceImpl implements ShopService {
 	 * @return
 	 */
 	@Override
-	public Integer doAddCart(String userCode, Long proId, HttpSession session) {
+	public Integer doAddCart(String userCode, Long proId, Integer orderCount, HttpSession session) {
 		//尝试从session中取出登录的时候放置的购物车的map
 		//Map<商品ID,Cart>
 		@SuppressWarnings("unchecked")
@@ -277,7 +306,7 @@ public class ShopServiceImpl implements ShopService {
 				cart.setCreateDate(new Date());
 			} else {
 				//将购买数量加一
-				cart.setOrderCount(cart.getOrderCount() + 1);
+				cart.setOrderCount(cart.getOrderCount() + orderCount);
 			}
 
 			//重新将商品ID，和购买数量放置到map中
@@ -294,7 +323,7 @@ public class ShopServiceImpl implements ShopService {
 			cart = new Cart();
 			cart.setUserCode(userCode);
 			cart.setProductId(proId);
-			cart.setOrderCount(1);
+			cart.setOrderCount(orderCount);
 			cart.setActiveFlag(1);
 			cart.setCreateBy(userCode);
 			cart.setCreateDate(new Date());
@@ -331,6 +360,28 @@ public class ShopServiceImpl implements ShopService {
 		cartMap.remove(proId);
 		this.cartDao.delete(rowId);
 		return cartMap.size();
+	}
+
+	/**
+	 * @Title: updateCartCount 
+	 * @Description:(更新购物车的数量)
+	 * @param rowId
+	 * @param orderCount
+	 * @return
+	 */
+	@Override
+	public Integer updateCartCount(Long rowId, Integer orderCount, HttpSession session) {
+		Cart cart = cartDao.get(rowId);
+		cart.setOrderCount(orderCount);
+		cartDao.update(cart);
+		Long proId = cart.getProductId();
+		@SuppressWarnings("unchecked")
+		Map<Long, Cart> cartMap = (Map<Long, Cart>) session.getAttribute(ConfigUtils.SESSION_USER_CART);
+		Cart cartValue = cartMap.get(proId);
+		cartValue.setOrderCount(orderCount);
+		cartMap.put(proId, cartValue);
+		session.setAttribute(ConfigUtils.SESSION_USER_CART, cartMap);
+		return 1;
 	}
 
 	/**
@@ -396,6 +447,28 @@ public class ShopServiceImpl implements ShopService {
 	}
 
 	/**
+	 * @Title: findOrderById 
+	 * @Description:(根据 order主键查询订单的信息)
+	 * @param orderId
+	 * @return
+	 */
+	@Override
+	public Order findOrderById(Long orderId) {
+		return orderDao.get(orderId);
+	}
+
+	/**
+	 * @Title: findAddressById 
+	 * @Description:(根据主键查询收货地址)
+	 * @param addressId
+	 * @return
+	 */
+	@Override
+	public Address findAddressById(Long addressId) {
+		return addressDao.get(addressId);
+	}
+
+	/**
 	 * @Title: checkUserPass 
 	 * @Description:(检查用户原密码是否正确)
 	 * @param fieldParam
@@ -419,7 +492,18 @@ public class ShopServiceImpl implements ShopService {
 	@Override
 	public Integer doUpdateUserPass(String userCode, String userPass) {
 		this.userDao.updatePass(userCode, MD5Utils.encode(userPass));
-		return null;
+		return 1;
+	}
+
+	/**
+	 * @Title: findProductById 
+	 * @Description:(根据主键查询商品信息)
+	 * @param rowId
+	 * @return
+	 */
+	@Override
+	public Product findProductById(Long rowId) {
+		return productDao.get(rowId);
 	}
 
 }
